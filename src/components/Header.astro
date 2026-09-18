@@ -1,0 +1,302 @@
+---
+import { navLinks, site, whatsappLink } from '../data/site';
+import SocialIcon from './SocialIcon.astro';
+import { cld, cldSrcset } from '../lib/cloudinary';
+
+const logo = 'logo-universo-crafter.png';
+
+// Colores pastel de la marca, uno por enlace (ciclan si hay más enlaces).
+const accents = [
+  { soft: '#fce4ec', strong: '#f7a8c4' }, // rosa
+  { soft: '#e3f4fd', strong: '#9fd8f2' }, // celeste
+  { soft: '#d9f5ec', strong: '#8fe0c4' }, // menta
+  { soft: '#ece4fb', strong: '#b9a7f0' }, // lila
+  { soft: '#fdf3cf', strong: '#f6d36b' }, // amarillo
+];
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-white/40 bg-[linear-gradient(90deg,#fdf0f5_0%,#fcf5fa_22%,#f4f5fc_50%,#e9f3fb_66%,#ece4fb_100%)]"
+>
+  <!-- Fondo tenue detrás del menú flotante (móvil) -->
+  <div
+    id="menu-backdrop"
+    class="menu-backdrop fixed inset-0 -z-10 bg-tinta/25 backdrop-blur-[2px] lg:hidden"
+    data-open="false"
+    aria-hidden="true"
+  >
+  </div>
+  <nav
+    class="mx-auto flex max-w-sitio items-center justify-between gap-4 px-5 py-4 md:px-8"
+    aria-label="Navegación principal"
+  >
+    <a href="#inicio" aria-label="Universo Crafter — inicio" class="shrink-0">
+      <img
+        src={cld(logo, 400)}
+        srcset={cldSrcset(logo, [280, 400, 560])}
+        width="396"
+        height="188"
+        alt="Universo Crafter"
+        class="h-16 w-auto md:h-20"
+        fetchpriority="high"
+      />
+    </a>
+
+    <ul class="hidden items-center gap-7 lg:flex">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="text-sm font-medium tracking-wide text-tinta-suave uppercase transition-colors hover:text-rosa-fuerte"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener"
+        aria-label="Escríbenos por WhatsApp"
+        class="hidden text-tinta-suave transition-colors hover:text-menta-fuerte sm:block"
+      >
+        <SocialIcon name="whatsapp" />
+      </a>
+      <a
+        href={site.instagram}
+        target="_blank"
+        rel="noopener"
+        aria-label="Síguenos en Instagram"
+        class="hidden text-tinta-suave transition-colors hover:text-rosa-fuerte sm:block"
+      >
+        <SocialIcon name="instagram" />
+      </a>
+      <a
+        href={site.facebook}
+        target="_blank"
+        rel="noopener"
+        aria-label="Síguenos en Facebook"
+        class="hidden text-tinta-suave transition-colors hover:text-celeste-fuerte sm:block"
+      >
+        <SocialIcon name="facebook" />
+      </a>
+
+      <button
+        type="button"
+        id="menu-toggle"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        class="menu-toggle ml-1 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-white/60 text-tinta shadow-suave transition-colors hover:bg-white lg:hidden"
+      >
+        <span class="menu-icon" aria-hidden="true">
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+          <span class="menu-bar"></span>
+        </span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Menú móvil flotante (no desplaza el contenido) -->
+  <div
+    id="mobile-menu"
+    class="mobile-menu absolute inset-x-0 top-full z-40 lg:hidden"
+    data-open="false"
+  >
+    <div class="mobile-menu__inner">
+      <div
+        class="rounded-b-3xl border-t border-white/50 bg-[linear-gradient(160deg,#fdf0f5_0%,#f4f5fc_50%,#ece4fb_100%)] px-5 pb-7 pt-4 shadow-[0_24px_40px_-16px_rgb(43_36_54/0.35)]"
+      >
+        <ul class="flex flex-col gap-2.5">
+          {
+            navLinks.map((link, i) => {
+              const c = accents[i % accents.length];
+              return (
+                <li class="menu-item" style={`--i:${i}`}>
+                  <a
+                    href={link.href}
+                    class="mobile-link group flex min-h-[52px] items-center gap-3.5 rounded-2xl px-4 py-3 shadow-suave transition-transform duration-200 active:translate-x-0.5"
+                    style={`background:${c.soft}`}
+                  >
+                    <span
+                      class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-white/70"
+                    >
+                      <span
+                        class="h-2.5 w-2.5 rounded-full"
+                        style={`background:${c.strong}`}
+                      />
+                    </span>
+                    <span class="text-lg font-semibold text-tinta">
+                      {link.label}
+                    </span>
+                    <svg
+                      class="ml-auto h-5 w-5 shrink-0 text-tinta/40 transition-transform duration-200 group-hover:translate-x-1"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      aria-hidden="true"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6" />
+                    </svg>
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+
+        <!-- CTA WhatsApp + redes -->
+        <div class="menu-item mt-4 flex items-center gap-3" style={`--i:${navLinks.length}`}>
+          <a
+            href={whatsappLink}
+            target="_blank"
+            rel="noopener"
+            class="flex min-h-[52px] flex-1 items-center justify-center gap-2.5 rounded-2xl bg-oscuro px-5 py-3.5 text-base font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
+          >
+            <SocialIcon name="whatsapp" />
+            Escríbenos por WhatsApp
+          </a>
+          <a
+            href={site.instagram}
+            target="_blank"
+            rel="noopener"
+            aria-label="Síguenos en Instagram"
+            class="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-2xl bg-white/70 text-tinta-suave shadow-suave transition-colors hover:text-rosa-fuerte"
+          >
+            <SocialIcon name="instagram" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* ---- Botón hamburguesa que se transforma en X ---- */
+  .menu-icon {
+    display: grid;
+    gap: 5px;
+    width: 22px;
+  }
+  .menu-bar {
+    display: block;
+    height: 2px;
+    width: 22px;
+    border-radius: 999px;
+    background: currentColor;
+    transition:
+      transform 0.3s ease,
+      opacity 0.2s ease;
+  }
+  /* Al abrir: la barra central desaparece y las otras dos forman una X
+     centrada y simétrica (gap 5px + barra 2px => desplazamiento de 7px). */
+  .menu-toggle[aria-expanded='true'] .menu-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded='true'] .menu-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .menu-toggle[aria-expanded='true'] .menu-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* ---- Panel que se despliega suavemente (altura + fade) ---- */
+  .mobile-menu {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.35s ease,
+      opacity 0.3s ease;
+  }
+  .mobile-menu[data-open='true'] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .mobile-menu__inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  /* ---- Entrada escalonada de cada elemento ---- */
+  .menu-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+  .mobile-menu[data-open='true'] .menu-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(var(--i) * 55ms + 80ms);
+  }
+
+  /* ---- Fondo tenue detrás del menú flotante ---- */
+  .menu-backdrop {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .menu-backdrop[data-open='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu,
+    .menu-item,
+    .menu-bar,
+    .menu-backdrop {
+      transition-duration: 0.01ms;
+    }
+    .menu-item {
+      transition-delay: 0ms;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('menu-backdrop');
+
+  function setOpen(open: boolean) {
+    if (!menu || !toggle) return;
+    menu.setAttribute('data-open', String(open));
+    backdrop?.setAttribute('data-open', String(open));
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  }
+
+  toggle?.addEventListener('click', () => {
+    setOpen(menu?.getAttribute('data-open') !== 'true');
+  });
+
+  // Cerrar al tocar el fondo tenue
+  backdrop?.addEventListener('click', () => setOpen(false));
+
+  // Cerrar al elegir un enlace del menú
+  menu?.querySelectorAll('.mobile-link').forEach((el) =>
+    el.addEventListener('click', () => setOpen(false)),
+  );
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu?.getAttribute('data-open') === 'true') setOpen(false);
+  });
+
+  // Cerrar al tocar fuera del header
+  document.addEventListener('click', (e) => {
+    if (menu?.getAttribute('data-open') !== 'true') return;
+    const header = toggle?.closest('header');
+    if (header && !header.contains(e.target as Node)) setOpen(false);
+  });
+</script>

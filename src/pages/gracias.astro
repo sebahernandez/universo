@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { cld } from '../lib/cloudinary';
+
+// Segundos antes de volver automáticamente al inicio.
+const REDIRECT_SECONDS = 6;
+---
+
+<Layout title="¡Gracias! · Universo Crafter">
+  <main
+    class="grid min-h-screen place-items-center bg-[linear-gradient(90deg,#fdf0f5_0%,#fcf5fa_22%,#f4f5fc_50%,#e9f3fb_66%,#ece4fb_100%)] px-5 py-16"
+  >
+    <div class="mx-auto max-w-xl text-center">
+      <img
+        src={cld('escribenos.png', 480)}
+        width="200"
+        height="200"
+        alt=""
+        decoding="async"
+        class="mx-auto w-40 object-contain drop-shadow-[0_16px_24px_rgb(43_36_54/0.18)] md:w-52"
+      />
+
+      <h1 class="mt-6 font-display text-6xl leading-[0.95] sm:text-7xl">
+        <span class="text-grad-warm">¡Gracias por</span>
+        <span class="text-grad-cool">escribirnos!</span>
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-md text-lg leading-relaxed text-tinta">
+        Recibimos tu mensaje y te responderemos muy pronto para ayudarte a darle
+        forma a tu idea. ✨
+      </p>
+
+      <p class="mt-4 text-sm text-tinta-suave">
+        Te llevaremos de vuelta al inicio en
+        <span id="cuenta" class="font-bold text-tinta">{REDIRECT_SECONDS}</span>
+        segundos…
+      </p>
+
+      <a
+        href="/"
+        class="mt-8 inline-block rounded-2xl bg-oscuro px-7 py-4 text-base font-semibold text-white transition-transform hover:-translate-y-0.5"
+      >
+        Volver al inicio ahora
+      </a>
+    </div>
+  </main>
+</Layout>
+
+<script define:vars={{ REDIRECT_SECONDS }}>
+  let restante = REDIRECT_SECONDS;
+  const nodo = document.getElementById('cuenta');
+  const intervalo = setInterval(() => {
+    restante -= 1;
+    if (nodo) nodo.textContent = String(Math.max(restante, 0));
+    if (restante <= 0) {
+      clearInterval(intervalo);
+      window.location.href = '/';
+    }
+  }, 1000);
+</script>

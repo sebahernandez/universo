@@ -1,0 +1,217 @@
+---
+import DisplayTitle from './DisplayTitle.astro';
+import { galeria } from '../data/content';
+import { cld, cldSrcset } from '../lib/cloudinary';
+---
+
+<section id="proyectos" class="bg-amarillo">
+  <div class="mx-auto max-w-sitio px-5 py-16 md:px-8 md:py-24">
+    <DisplayTitle
+      lead="Nuestros"
+      accent="Proyectos"
+      subtitle="Ideas, procesos, nuevos productos y proyectos que vamos creando día a día"
+      class="mb-12"
+    />
+
+    <div id="galeria-grid" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+      {
+        galeria.map((item, i) => (
+          <figure class="overflow-hidden rounded-suave shadow-suave">
+            <button
+              type="button"
+              class="galeria-item group relative block w-full cursor-pointer overflow-hidden rounded-suave focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-lila-fuerte/60"
+              data-index={i}
+              data-full={cld(item.src, 1600)}
+              data-srcset={cldSrcset(item.src, [900, 1200, 1600])}
+              data-alt={item.alt}
+              aria-label={`Ampliar imagen: ${item.alt}`}
+            >
+              <img
+                src={cld(item.src, 386)}
+                srcset={cldSrcset(item.src, [240, 386, 500])}
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 15vw"
+                width="386"
+                height="310"
+                alt={item.alt}
+                loading="lazy"
+                decoding="async"
+                class="aspect-[386/310] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+              {/* Indicio visual de que la imagen es interactiva */}
+              <span
+                class="pointer-events-none absolute inset-0 flex items-center justify-center bg-tinta/0 opacity-0 transition-all duration-300 group-hover:bg-tinta/25 group-hover:opacity-100"
+                aria-hidden="true"
+              >
+                <span class="grid h-11 w-11 place-items-center rounded-full bg-white/90 text-tinta shadow-tarjeta">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="11" cy="11" r="7" />
+                    <path stroke-linecap="round" d="M20 20l-3.5-3.5M11 8v6M8 11h6" />
+                  </svg>
+                </span>
+              </span>
+            </button>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+{/* ===== Modal / Lightbox interactivo ===== */}
+<div
+  id="galeria-modal"
+  class="galeria-modal fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6"
+  data-open="false"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Vista ampliada del proyecto"
+  aria-hidden="true"
+>
+  {/* Fondo tenue */}
+  <div class="modal-backdrop absolute inset-0 bg-tinta/60 backdrop-blur-sm" data-close></div>
+
+  {/* Panel: marco redondeado; la imagen va cuadrada dentro */}
+  <div
+    class="modal-panel relative z-10 flex w-full max-w-4xl flex-col overflow-hidden rounded-panel border border-white/50 bg-crema p-2.5 shadow-tarjeta sm:p-3"
+  >
+    {/* Botón cerrar */}
+    <button
+      type="button"
+      id="modal-close"
+      aria-label="Cerrar"
+      class="absolute right-4 top-4 z-20 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-white/80 text-tinta shadow-suave transition-colors hover:bg-white focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rosa-fuerte/60"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true">
+        <path stroke-linecap="round" d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+
+    {/* Imagen cuadrada (sin radius); el radius lo pone el contenedor */}
+    <img
+      id="modal-img"
+      src=""
+      alt=""
+      width="1200"
+      height="964"
+      decoding="async"
+      class="modal-img block max-h-[80vh] w-full object-cover"
+    />
+
+    {/* Título de la imagen con diseño de marca */}
+    <div class="flex items-center gap-3.5 px-3 pb-2 pt-4 sm:px-4">
+      {/* Ícono decorativo (chispa) en burbuja pastel */}
+      <span
+        class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[linear-gradient(160deg,#fce4ec_0%,#ece4fb_100%)] shadow-suave"
+        aria-hidden="true"
+      >
+        <svg class="h-5 w-5 text-rosa-fuerte" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2l1.9 5.6a3 3 0 001.9 1.9L21.5 11l-5.7 1.5a3 3 0 00-1.9 1.9L12 20l-1.9-5.6a3 3 0 00-1.9-1.9L2.5 11l5.7-1.5a3 3 0 001.9-1.9L12 2z" />
+        </svg>
+      </span>
+
+      <div class="min-w-0">
+        <p class="font-display text-lg leading-none text-grad-warm">Nuestro proyecto</p>
+        <p id="modal-caption" class="mt-1 text-sm leading-snug font-medium text-tinta sm:text-base"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* El modal aparece con un suave fundido + escala, sin desplazar el sitio */
+  .galeria-modal {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .galeria-modal[data-open='true'] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .galeria-modal .modal-panel {
+    transform: translateY(12px) scale(0.98);
+    transition:
+      transform 0.3s ease,
+      opacity 0.25s ease;
+  }
+  .galeria-modal[data-open='true'] .modal-panel {
+    transform: translateY(0) scale(1);
+  }
+  /* Evita el scroll del fondo cuando el modal está abierto */
+  :global(body.modal-abierto) {
+    overflow: hidden;
+  }
+
+  /* La imagen aparece solo cuando terminó de cargar (evita ver la anterior) */
+  .modal-img {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .modal-img.is-ready {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .galeria-modal,
+    .galeria-modal .modal-panel {
+      transition-duration: 0.01ms;
+    }
+    .galeria-modal .modal-panel {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const modal = document.getElementById('galeria-modal');
+  const img = document.getElementById('modal-img') as HTMLImageElement | null;
+  const caption = document.getElementById('modal-caption');
+  const btnClose = document.getElementById('modal-close');
+  const items = Array.from(document.querySelectorAll<HTMLButtonElement>('.galeria-item'));
+
+  let lastFocused: HTMLElement | null = null;
+
+  function open(el: HTMLButtonElement) {
+    if (!modal || !img || !caption) return;
+    lastFocused = document.activeElement as HTMLElement;
+
+    // Oculta la imagen hasta que la nueva termine de cargar (evita ver la anterior)
+    img.classList.remove('is-ready');
+    const reveal = () => img.classList.add('is-ready');
+    img.onload = reveal;
+    img.sizes = '(max-width: 768px) 94vw, (max-width: 1280px) 90vw, 1100px';
+    img.srcset = el.dataset.srcset ?? '';
+    img.src = el.dataset.full ?? '';
+    img.alt = el.dataset.alt ?? '';
+    caption.textContent = el.dataset.alt ?? '';
+    // Si la imagen ya estaba en caché, `load` puede no dispararse: revélala igual
+    if (img.complete && img.naturalWidth > 0) reveal();
+
+    modal.setAttribute('data-open', 'true');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-abierto');
+    btnClose?.focus();
+  }
+
+  function close() {
+    if (!modal) return;
+    modal.setAttribute('data-open', 'false');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-abierto');
+    lastFocused?.focus();
+  }
+
+  items.forEach((el) => el.addEventListener('click', () => open(el)));
+  btnClose?.addEventListener('click', close);
+
+  // Cerrar al tocar el fondo tenue
+  modal?.querySelectorAll('[data-close]').forEach((el) =>
+    el.addEventListener('click', close),
+  );
+
+  // Cerrar con Escape
+  document.addEventListener('keydown', (e) => {
+    if (modal?.getAttribute('data-open') !== 'true') return;
+    if (e.key === 'Escape') close();
+  });
+</script>

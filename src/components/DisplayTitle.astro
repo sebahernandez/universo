@@ -1,0 +1,24 @@
+---
+// Título display bicolor (imita el lettering del diseño).
+interface Props {
+  lead: string; // primera parte (lila)
+  accent: string; // segunda parte (rosa)
+  subtitle?: string;
+  class?: string;
+}
+const { lead, accent, subtitle, class: className = '' } = Astro.props;
+---
+
+<div class={`text-center ${className}`}>
+  <h2 class="font-display text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
+    <span class="mr-[0.25em] text-grad-cool">{lead}</span>
+    <span class="text-grad-warm">{accent}</span>
+  </h2>
+  {
+    subtitle && (
+      <p class="mt-1 text-base font-semibold tracking-[0.18em] text-tinta uppercase sm:text-lg">
+        {subtitle}
+      </p>
+    )
+  }
+</div>

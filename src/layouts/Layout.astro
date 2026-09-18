@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = 'Universo Crafter · Papelería creativa hecha para recordar',
+  description = site.description,
+  image = 'https://res.cloudinary.com/v5ovpy2d/image/upload/f_auto,q_auto,c_pad,b_auto,w_1200,h_630/impresora-banner-home.png',
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
+
+// Schema.org LocalBusiness para SEO local (Chile).
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: site.name,
+  description: site.description,
+  url: Astro.site?.href,
+  email: site.email,
+  telephone: `+${site.whatsapp}`,
+  image: ogImage,
+  areaServed: { '@type': 'Country', name: 'Chile' },
+  address: { '@type': 'PostalAddress', addressCountry: 'CL' },
+  sameAs: [site.instagram, site.facebook],
+};
+---
+
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#fce4ec" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Precarga de fuentes above-the-fold (locales) -->
+    <link
+      rel="preload"
+      href="/fonts/lemonilla.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/nunito-sans-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_CL" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd)}
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

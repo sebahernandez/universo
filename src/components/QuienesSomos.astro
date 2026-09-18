@@ -1,0 +1,124 @@
+---
+import DisplayTitle from './DisplayTitle.astro';
+---
+
+<section id="quienes-somos" class="relative overflow-hidden bg-celeste">
+  <!-- Doodles decorativos (mismos del diseño de referencia) -->
+  <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
+    <!-- Planeta (Saturno) · superior izquierda -->
+    <svg
+      class="absolute left-[6%] top-10 h-16 w-20 md:h-20 md:w-24"
+      viewBox="0 0 80 64"
+      fill="none"
+    >
+      <circle cx="40" cy="27" r="16" fill="#f7a8c4"></circle>
+      <circle cx="34" cy="22" r="2.4" fill="#e987ac"></circle>
+      <circle cx="45" cy="29" r="3.2" fill="#e987ac"></circle>
+      <circle cx="38" cy="33" r="1.8" fill="#e987ac"></circle>
+      <ellipse
+        cx="40"
+        cy="29"
+        rx="33"
+        ry="9.5"
+        fill="none"
+        stroke="#f7b58a"
+        stroke-width="3"
+        transform="rotate(-18 40 29)"></ellipse>
+    </svg>
+
+    <!-- Destellos superior izquierda -->
+    <svg class="absolute left-[3%] top-8 h-5 w-5 text-amarillo-fuerte" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
+    </svg>
+    <svg class="absolute left-[14%] top-24 h-4 w-4 text-lila-fuerte" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
+    </svg>
+
+    <!-- Órbita (swoosh afilado + destellos) · superior derecha -->
+    <svg
+      class="absolute right-[4%] top-6 h-28 w-28 md:h-32 md:w-32"
+      viewBox="0 0 150 170"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M18,80C44,99,92,95,128,60C100,79,52,86,18,80Z"
+        fill="#c3b0ec"></path>
+      <path
+        d="M12 0c.5 9.5 2.5 11.5 12 12-9.5.5-11.5 2.5-12 12-.5-9.5-2.5-11.5-12-12 9.5-.5 11.5-2.5 12-12Z"
+        fill="#b9a7f0"
+        transform="translate(120 40) scale(1.25)"></path>
+      <path
+        d="M12 0c.5 9.5 2.5 11.5 12 12-9.5.5-11.5 2.5-12 12-.5-9.5-2.5-11.5-12-12 9.5-.5 11.5-2.5 12-12Z"
+        fill="#f7a8c4"
+        transform="translate(58 136) scale(0.85)"></path>
+    </svg>
+
+    <!-- Órbita punteada + punto · centro izquierda -->
+    <svg
+      class="absolute left-[4%] top-1/2 hidden h-20 w-36 text-menta-fuerte sm:block"
+      viewBox="0 0 150 80"
+      fill="none"
+    >
+      <ellipse
+        cx="75"
+        cy="40"
+        rx="60"
+        ry="20"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-dasharray="1 10"
+        transform="rotate(-18 75 40)"></ellipse>
+      <circle cx="118" cy="24" r="8" fill="#9fd8f2"></circle>
+    </svg>
+    <svg class="absolute left-[2%] top-[58%] hidden h-4 w-4 text-amarillo-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
+    </svg>
+    <svg class="absolute left-[13%] top-[60%] hidden h-4 w-4 text-lila-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
+    </svg>
+
+    <!-- Destellos rosados · centro derecha -->
+    <svg class="absolute right-[4%] top-1/2 hidden h-6 w-6 text-rosa-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
+    </svg>
+    <svg class="absolute right-[2%] top-[58%] hidden h-4 w-4 text-rosa-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
+    </svg>
+
+    <!-- Líneas onduladas + destello · inferior centro -->
+    <svg
+      class="absolute bottom-12 left-1/2 h-8 w-20 -translate-x-1/2 text-amarillo-fuerte"
+      viewBox="0 0 80 32"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="4"
+      stroke-linecap="round"
+    >
+      <path d="M4 12c8-8 16 8 24 0s16-8 24 0 16 8 24 0"></path>
+      <path d="M4 24c8-8 16 8 24 0s16-8 24 0 16 8 24 0"></path>
+    </svg>
+    <svg class="absolute bottom-10 left-[56%] h-5 w-5 text-menta-fuerte" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
+    </svg>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-4xl px-5 py-16 text-center md:px-8 md:py-24">
+    <DisplayTitle lead="¿Quiénes" accent="Somos?" subtitle="Ideas que se convierten en algo real" />
+
+    <div class="mt-10 space-y-6 text-lg leading-relaxed text-tinta">
+      <p>
+        En <strong class="font-semibold">Universo Crafter</strong> transformamos ideas en piezas que se
+        pueden tocar, guardar, regalar y recordar. Somos un taller creativo dedicado a la papelería
+        personalizada, la impresión y el desarrollo de proyectos hechos con especial cuidado por los
+        detalles.
+      </p>
+      <p>
+        Nos inspira el papel, el color, la fotografía y todo lo que puede surgir cuando el diseño se
+        combina con procesos manuales y producción a pequeña escala. Por eso trabajamos cada proyecto de
+        manera cercana, buscando que cada pieza tenga identidad propia y se sienta realmente especial.
+      </p>
+    </div>
+  </div>
+</section>

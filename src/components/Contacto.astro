@@ -1,0 +1,166 @@
+---
+import { site, whatsappLink } from '../data/site';
+import { cld } from '../lib/cloudinary';
+
+// URL absoluta a la página de gracias (Web3Forms exige URL completa).
+// Astro.url refleja el host real: localhost en dev, dominio final en producción.
+const graciasUrl = new URL('/gracias', Astro.url).href;
+
+const cards = [
+  { icon: 'instagram.png', label: site.instagramHandle, href: site.instagram, bg: 'bg-rosa/50' },
+  { icon: 'facebook.png', label: site.facebookHandle, href: site.facebook, bg: 'bg-celeste/50' },
+  { icon: 'whatsapp.png', label: site.whatsappDisplay, href: whatsappLink, bg: 'bg-menta/50' },
+];
+---
+
+<section id="contacto" class="bg-[linear-gradient(90deg,#fdf0f5_0%,#fcf5fa_22%,#f4f5fc_50%,#e9f3fb_66%,#ece4fb_100%)]">
+  <div class="mx-auto grid max-w-sitio items-start gap-12 px-5 py-16 md:px-8 md:py-24 lg:grid-cols-2">
+    <!-- Columna izquierda: intro + tarjetas -->
+    <div>
+      <h2 class="font-display text-6xl leading-[0.95] sm:text-7xl lg:text-8xl">
+        <span class="mr-[0.25em] text-grad-cool">Cuéntanos que</span>
+        <span class="text-grad-warm">tienes en mente</span>
+      </h2>
+      <p class="mt-6 max-w-md text-lg leading-relaxed text-tinta">
+        Si tienes una idea, proyecto o cotización en mente, escríbenos y conversemos. Estaremos felices de
+        ayudarte a llevarlo al papel.
+      </p>
+
+      <div class="mt-8 space-y-4">
+        {
+          cards.map((c) => (
+            <a
+              href={c.href}
+              target="_blank"
+              rel="noopener"
+              class={`flex items-center gap-4 rounded-tarjeta ${c.bg} px-5 py-4 shadow-suave transition-transform hover:-translate-y-0.5`}
+            >
+              <img
+                src={cld(c.icon, 128)}
+                width="56"
+                height="56"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                class="h-14 w-14 shrink-0 object-contain"
+              />
+              <span class="text-lg font-semibold text-tinta">{c.label}</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Columna derecha: formulario (Web3Forms) -->
+    <div class="relative pt-12">
+      <!-- Doodle punteado decorativo -->
+      <svg
+        class="absolute -top-1 left-8 z-20 w-24 text-rosa-fuerte"
+        viewBox="0 0 120 44"
+        fill="none"
+        aria-hidden="true"
+      >
+        <circle cx="8" cy="34" r="4.5" fill="currentColor" />
+        <path
+          d="M13 31 C 38 8, 66 42, 100 16"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-dasharray="2 6"
+          stroke-linecap="round"
+        />
+        <circle cx="104" cy="13" r="5.5" fill="currentColor" />
+      </svg>
+
+      <!-- Sobre 3D sobresaliendo -->
+      <img
+        src={cld('escribenos.png', 420)}
+        width="200"
+        height="200"
+        alt=""
+        loading="lazy"
+        decoding="async"
+        class="absolute -top-2 right-2 z-20 w-36 object-contain drop-shadow-[0_16px_24px_rgb(43_36_54/0.18)] md:w-48"
+      />
+
+      <!-- Tarjeta con degradado -->
+      <div
+        class="relative overflow-hidden rounded-[2rem] p-6 shadow-tarjeta md:p-9"
+        style="background:radial-gradient(120% 120% at 0% 0%,#f9cfe0 0%,rgba(249,207,224,0) 42%),radial-gradient(120% 120% at 100% 0%,#dcc9f2 0%,rgba(220,201,242,0) 46%),radial-gradient(130% 130% at 100% 100%,#c3ecf6 0%,rgba(195,236,246,0) 46%),#fbfaff"
+      >
+        <h3 class="font-display text-4xl text-tinta md:text-5xl">Escríbenos</h3>
+        <p class="mt-3 max-w-sm text-base leading-relaxed text-tinta-suave">
+          Cuéntanos qué te gustaría crear y te responderemos para ayudarte a darle forma a tu idea.
+        </p>
+
+        <form action="https://api.web3forms.com/submit" method="POST" class="mt-7 space-y-5">
+          <input type="hidden" name="access_key" value={site.web3formsKey} />
+          <input type="hidden" name="subject" value="Nuevo mensaje desde universocrafter.cl" />
+          <input type="hidden" name="from_name" value="Universo Crafter Web" />
+          <!-- Redirige a nuestra página de gracias tras el envío -->
+          <input type="hidden" name="redirect" value={graciasUrl} />
+          <!-- Honeypot anti-spam -->
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
+
+          <div>
+            <label for="nombre" class="mb-2 block text-sm font-bold text-tinta">Nombre</label>
+            <input
+              id="nombre"
+              type="text"
+              name="name"
+              required
+              placeholder="Tu nombre"
+              class="w-full rounded-2xl border border-tinta/10 bg-white/70 px-5 py-4 text-tinta shadow-sm outline-none transition-colors placeholder:text-tinta-suave/70 focus:border-lila-fuerte focus:bg-white"
+            />
+          </div>
+
+          <div>
+            <label for="email" class="mb-2 block text-sm font-bold text-tinta">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required
+              placeholder="tu@email.com"
+              class="w-full rounded-2xl border border-tinta/10 bg-white/70 px-5 py-4 text-tinta shadow-sm outline-none transition-colors placeholder:text-tinta-suave/70 focus:border-lila-fuerte focus:bg-white"
+            />
+          </div>
+
+          <div>
+            <label for="mensaje" class="mb-2 block text-sm font-bold text-tinta">
+              ¿Qué te gustaría crear?
+            </label>
+            <textarea
+              id="mensaje"
+              name="message"
+              required
+              rows="5"
+              placeholder="Cuéntanos brevemente sobre tu proyecto, cantidad, fecha o cualquier detalle que quieras compartir."
+              class="w-full resize-none rounded-2xl border border-tinta/10 bg-white/70 px-5 py-4 text-tinta shadow-sm outline-none transition-colors placeholder:text-tinta-suave/70 focus:border-lila-fuerte focus:bg-white"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="relative w-full rounded-2xl bg-oscuro px-6 py-4.5 text-center text-base font-semibold text-white transition-transform hover:-translate-y-0.5"
+          >
+            Enviar mensaje
+            <svg
+              class="absolute right-6 top-1/2 h-5 w-5 -translate-y-1/2"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+
+          <p class="text-xs text-tinta-suave">
+            También puedes escribirnos por Instagram o WhatsApp.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

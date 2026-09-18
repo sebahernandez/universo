@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Tipografías locales (self-hosted)
+   Coloca los archivos entregados por el cliente en /public/fonts/
+   y ajusta los nombres/rutas/pesos si difieren.
+   ============================================================ */
+
+/* Display: títulos hechos a mano (hero, secciones) — Lemonilla (peso único) */
+@font-face {
+  font-family: 'Crafter Display';
+  src: url('/fonts/lemonilla.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Sans humanista para cuerpo/subtítulos/tarjetas — Nunito Sans (variable 400–700) */
+@font-face {
+  font-family: 'Crafter Sans';
+  src: url('/fonts/nunito-sans-var.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Tokens de tema (Tailwind v4)
+   ============================================================ */
+@theme {
+  /* Tipografías */
+  --font-display: 'Crafter Display', 'Comic Sans MS', 'Segoe Print', cursive;
+  --font-sans: 'Crafter Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Paleta pastel */
+  --color-crema: #fdf7ef;
+  --color-rosa: #fce4ec;
+  --color-rosa-fuerte: #f7a8c4;
+  --color-lila: #ece4fb;
+  --color-lila-claro: #f2f0fe; /* fondo "No sólo imprimimos" (PDF) */
+  --color-blanco-lila: #fbf9fd; /* fondo "¿Qué podemos hacer?" (PDF) */
+  --color-lila-fuerte: #b9a7f0;
+  --color-celeste: #e3f4fd;
+  --color-celeste-fuerte: #9fd8f2;
+  --color-menta: #d9f5ec;
+  --color-menta-fuerte: #8fe0c4;
+  --color-amarillo: #fdf3cf;
+  --color-amarillo-fuerte: #f6d36b;
+  --color-durazno: #ffe6d3;
+  --color-durazno-fuerte: #f7b58a;
+
+  /* Texto */
+  --color-tinta: #2b2436;
+  --color-tinta-suave: #6b6478;
+
+  /* Superficies / botones */
+  --color-oscuro: #221c2e;
+
+  /* Ancho máximo del container principal (desktop) */
+  --container-sitio: 90rem; /* 1440px */
+
+  /* Radios */
+  --radius-suave: 1rem;
+  --radius-tarjeta: 1.5rem;
+  --radius-panel: 2rem;
+
+  /* Sombras */
+  --shadow-suave: 0 10px 30px -12px rgb(43 36 54 / 0.15);
+  --shadow-tarjeta: 0 20px 45px -20px rgb(43 36 54 / 0.2);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem; /* compensa el header sticky al saltar por anclas */
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-tinta);
+  background-color: var(--color-crema);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Degradados multicolor recortados al texto (títulos display).
+   cool  = palabra inicial (lila → celeste → menta)
+   warm  = palabra de acento (rosa → durazno → amarillo) */
+.text-grad-cool,
+.text-grad-warm {
+  display: inline-block;
+  padding-bottom: 0.08em; /* evita recortar descendentes (p, í) */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-grad-cool {
+  background-image: linear-gradient(100deg, #b9a7f0 0%, #9fd8f2 50%, #8fe0c4 100%);
+}
+.text-grad-warm {
+  background-image: linear-gradient(100deg, #f7a8c4 0%, #f7b58a 55%, #f6d36b 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
