@@ -5,10 +5,10 @@ import { whatsappLink } from '../data/site';
 const hero = 'impresora-banner-home.png';
 ---
 
-<section id="inicio" class="relative overflow-hidden bg-rosa">
+<section id="inicio" class="section-blend relative overflow-hidden [--sec-from:var(--color-rosa)] [--sec-to:var(--color-celeste)]">
   <!-- Contenido centrado en el contenedor del sitio -->
-  <div class="mx-auto max-w-sitio px-5 py-16 md:px-8 md:py-24 lg:flex lg:min-h-[680px] lg:items-center">
-    <div class="min-w-0 lg:max-w-[54%]">
+  <div class="mx-auto max-w-sitio px-5 py-16 md:flex md:min-h-[560px] md:items-center md:px-8 md:py-24 lg:min-h-[680px]">
+    <div class="min-w-0 md:max-w-[50%] lg:max-w-[54%]">
       <h1
         aria-label="Papelería Creativa"
         class="font-display whitespace-nowrap text-5xl leading-[1.02] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
@@ -47,13 +47,13 @@ const hero = 'impresora-banner-home.png';
   <img
     src={cld(hero, 720)}
     srcset={cldSrcset(hero, [480, 720, 1082])}
-    sizes="(max-width: 1024px) 85vw, 42vw"
+    sizes="(max-width: 767px) 85vw, (max-width: 1023px) 46vw, 42vw"
     width="1082"
     height="1174"
     alt="Herramientas de papelería creativa: impresora fotográfica, máquina de chapas y plotter de corte en tonos pastel"
     loading="eager"
     fetchpriority="high"
     decoding="async"
-    class="mx-auto -mt-4 w-[85%] max-w-md pb-16 lg:absolute lg:right-0 lg:top-1/2 lg:mx-0 lg:mt-0 lg:w-[42vw] lg:max-w-[640px] lg:-translate-y-1/2 lg:pb-0"
+    class="mx-auto -mt-4 w-[85%] max-w-md pb-16 md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:w-[46vw] md:max-w-[440px] md:-translate-y-1/2 md:pb-0 lg:w-[42vw] lg:max-w-[640px]"
   />
 </section>

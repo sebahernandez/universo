@@ -2,14 +2,15 @@
 import DisplayTitle from './DisplayTitle.astro';
 ---
 
-<section id="quienes-somos" class="relative overflow-hidden bg-celeste">
+<section id="quienes-somos" class="section-blend relative overflow-hidden [--sec-from:var(--color-celeste)] [--sec-to:var(--color-lila-claro)]">
   <!-- Doodles decorativos (mismos del diseño de referencia) -->
   <div class="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
     <!-- Planeta (Saturno) · superior izquierda -->
     <svg
-      class="absolute left-[6%] top-10 h-16 w-20 md:h-20 md:w-24"
+      class="absolute left-[6%] top-10 h-24 w-28 md:h-28 md:w-36"
       viewBox="0 0 80 64"
       fill="none"
+      data-parallax="0.14"
     >
       <circle cx="40" cy="27" r="16" fill="#f7a8c4"></circle>
       <circle cx="34" cy="22" r="2.4" fill="#e987ac"></circle>
@@ -27,19 +28,20 @@ import DisplayTitle from './DisplayTitle.astro';
     </svg>
 
     <!-- Destellos superior izquierda -->
-    <svg class="absolute left-[3%] top-8 h-5 w-5 text-amarillo-fuerte" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="absolute left-[3%] top-8 h-7 w-7 text-amarillo-fuerte" viewBox="0 0 24 24" fill="currentColor" data-parallax="0.08">
       <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
     </svg>
-    <svg class="absolute left-[14%] top-24 h-4 w-4 text-lila-fuerte" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="absolute left-[14%] top-24 h-6 w-6 text-lila-fuerte" viewBox="0 0 24 24" fill="currentColor" data-parallax="0.18">
       <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
     </svg>
 
     <!-- Órbita (swoosh afilado + destellos) · superior derecha -->
     <svg
-      class="absolute right-[4%] top-6 h-28 w-28 md:h-32 md:w-32"
+      class="absolute right-[4%] top-6 h-40 w-40 md:h-48 md:w-48"
       viewBox="0 0 150 170"
       fill="none"
       aria-hidden="true"
+      data-parallax="0.16"
     >
       <path
         d="M18,80C44,99,92,95,128,60C100,79,52,86,18,80Z"
@@ -56,9 +58,10 @@ import DisplayTitle from './DisplayTitle.astro';
 
     <!-- Órbita punteada + punto · centro izquierda -->
     <svg
-      class="absolute left-[4%] top-1/2 hidden h-20 w-36 text-menta-fuerte sm:block"
+      class="absolute left-[4%] top-1/2 hidden h-28 w-52 text-menta-fuerte sm:block"
       viewBox="0 0 150 80"
       fill="none"
+      data-parallax="0.06"
     >
       <ellipse
         cx="75"
@@ -72,34 +75,35 @@ import DisplayTitle from './DisplayTitle.astro';
         transform="rotate(-18 75 40)"></ellipse>
       <circle cx="118" cy="24" r="8" fill="#9fd8f2"></circle>
     </svg>
-    <svg class="absolute left-[2%] top-[58%] hidden h-4 w-4 text-amarillo-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="absolute left-[2%] top-[58%] hidden h-6 w-6 text-amarillo-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor" data-parallax="0.10">
       <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
     </svg>
-    <svg class="absolute left-[13%] top-[60%] hidden h-4 w-4 text-lila-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="absolute left-[13%] top-[60%] hidden h-6 w-6 text-lila-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor" data-parallax="0.20">
       <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
     </svg>
 
     <!-- Destellos rosados · centro derecha -->
-    <svg class="absolute right-[4%] top-1/2 hidden h-6 w-6 text-rosa-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="absolute right-[4%] top-1/2 hidden h-9 w-9 text-rosa-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor" data-parallax="0.12">
       <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
     </svg>
-    <svg class="absolute right-[2%] top-[58%] hidden h-4 w-4 text-rosa-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="absolute right-[2%] top-[58%] hidden h-6 w-6 text-rosa-fuerte sm:block" viewBox="0 0 24 24" fill="currentColor" data-parallax="0.22">
       <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
     </svg>
 
     <!-- Líneas onduladas + destello · inferior centro -->
     <svg
-      class="absolute bottom-12 left-1/2 h-8 w-20 -translate-x-1/2 text-amarillo-fuerte"
+      class="absolute bottom-12 left-1/2 -ml-16 h-12 w-32 text-amarillo-fuerte"
       viewBox="0 0 80 32"
       fill="none"
       stroke="currentColor"
       stroke-width="4"
       stroke-linecap="round"
+      data-parallax="0.05"
     >
       <path d="M4 12c8-8 16 8 24 0s16-8 24 0 16 8 24 0"></path>
       <path d="M4 24c8-8 16 8 24 0s16-8 24 0 16 8 24 0"></path>
     </svg>
-    <svg class="absolute bottom-10 left-[56%] h-5 w-5 text-menta-fuerte" viewBox="0 0 24 24" fill="currentColor">
+    <svg class="absolute bottom-10 left-[56%] h-7 w-7 text-menta-fuerte" viewBox="0 0 24 24" fill="currentColor" data-parallax="0.16">
       <path d="M12 1c.6 6 5 10.4 11 11-6 .6-10.4 5-11 11-.6-6-5-10.4-11-11 6-.6 10.4-5 11-11Z"></path>
     </svg>
   </div>
@@ -122,3 +126,48 @@ import DisplayTitle from './DisplayTitle.astro';
     </div>
   </div>
 </section>
+
+<script>
+  const section = document.getElementById('quienes-somos');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (section && !reduce.matches) {
+    const els = Array.from(section.querySelectorAll<HTMLElement>('[data-parallax]'));
+    let ticking = false;
+
+    function update() {
+      const rect = section!.getBoundingClientRect();
+      // 0 cuando el centro de la sección coincide con el centro del viewport
+      const progress = rect.top + rect.height / 2 - window.innerHeight / 2;
+      for (const el of els) {
+        const speed = parseFloat(el.dataset.parallax || '0');
+        el.style.transform = `translate3d(0, ${(progress * speed).toFixed(1)}px, 0)`;
+      }
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll);
+            update();
+          } else {
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
+          }
+        }
+      },
+      { rootMargin: '150px' }
+    );
+    io.observe(section);
+  }
+</script>

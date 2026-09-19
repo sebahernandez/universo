@@ -10,7 +10,7 @@ const { lead, accent, subtitle, class: className = '' } = Astro.props;
 ---
 
 <div class={`text-center ${className}`}>
-  <h2 class="font-display text-5xl leading-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl">
+  <h2 class="font-display text-5xl leading-[1.02] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]">
     <span class="mr-[0.25em] text-grad-cool">{lead}</span>
     <span class="text-grad-warm">{accent}</span>
   </h2>

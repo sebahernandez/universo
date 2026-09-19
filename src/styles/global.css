@@ -89,6 +89,23 @@ body {
   font-family: var(--font-display);
 }
 
+/* ============================================================
+   Fundido de color entre secciones
+   Cada <section> declara sus colores con propiedades arbitrarias:
+   [--sec-from:...] [--sec-to:...]  (opcional [--blend:160px]).
+   El color propio se mantiene arriba y se funde al color de la
+   sección siguiente en una franja inferior de altura fija (px),
+   así la costura es invisible sin depender de la altura.
+   ============================================================ */
+.section-blend {
+  background: linear-gradient(
+    180deg,
+    var(--sec-from) 0%,
+    var(--sec-from) calc(100% - var(--blend, 200px)),
+    var(--sec-to) 100%
+  );
+}
+
 /* Degradados multicolor recortados al texto (títulos display).
    cool  = palabra inicial (lila → celeste → menta)
    warm  = palabra de acento (rosa → durazno → amarillo) */
