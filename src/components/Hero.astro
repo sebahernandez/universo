@@ -11,6 +11,7 @@ const hero = 'impresora-banner-home.png';
     <div class="min-w-0 md:max-w-[50%] lg:max-w-[54%]">
       <h1
         aria-label="Papelería Creativa"
+        data-fit-title
         class="font-display whitespace-nowrap text-5xl leading-[1.02] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
       >
         <span class="mr-[0.3em] text-grad-cool" aria-hidden="true">Papeleria</span>
@@ -45,6 +46,8 @@ const hero = 'impresora-banner-home.png';
 
   <!-- Imagen a tope del borde derecho (desktop); apilada bajo el texto en móvil -->
   <img
+    id="hero-img"
+    data-parallax="0.09"
     src={cld(hero, 720)}
     srcset={cldSrcset(hero, [480, 720, 1082])}
     sizes="(max-width: 767px) 85vw, (max-width: 1023px) 46vw, 42vw"
@@ -54,6 +57,43 @@ const hero = 'impresora-banner-home.png';
     loading="eager"
     fetchpriority="high"
     decoding="async"
-    class="mx-auto -mt-4 w-[85%] max-w-md pb-16 md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:w-[46vw] md:max-w-[440px] md:-translate-y-1/2 md:pb-0 lg:w-[42vw] lg:max-w-[640px]"
+    class="-mt-4 w-full max-w-none pb-16 will-change-transform md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:w-[46vw] md:max-w-[440px] md:-translate-y-1/2 md:pb-0 lg:w-[42vw] lg:max-w-[640px]"
   />
 </section>
+
+<script>
+  const heroSection = document.getElementById('inicio');
+  const heroImg = document.getElementById('hero-img');
+  const heroReduce = matchMedia('(prefers-reduced-motion: reduce)');
+  // Solo en móvil: en desktop la imagen usa su propio transform de centrado.
+  const heroMobile = matchMedia('(max-width: 767px)');
+
+  if (heroSection && heroImg && !heroReduce.matches) {
+    const speed = parseFloat(heroImg.dataset.parallax || '0');
+    let ticking = false;
+
+    function update() {
+      if (heroMobile.matches) {
+        const rect = heroSection!.getBoundingClientRect();
+        // 0 cuando el centro de la sección coincide con el centro del viewport
+        const progress = rect.top + rect.height / 2 - window.innerHeight / 2;
+        heroImg!.style.transform = `translate3d(0, ${(progress * speed).toFixed(1)}px, 0)`;
+      } else {
+        // Deja que las clases de Tailwind (md:-translate-y-1/2) controlen el desktop
+        heroImg!.style.transform = '';
+      }
+      ticking = false;
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+  }
+</script>

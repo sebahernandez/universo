@@ -10,7 +10,10 @@ const { lead, accent, subtitle, class: className = '' } = Astro.props;
 ---
 
 <div class={`text-center ${className}`}>
-  <h2 class="font-display text-5xl leading-[1.02] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]">
+  <h2
+    data-fit-title
+    class="font-display text-[2.75rem] leading-[1.02] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
+  >
     <span class="mr-[0.25em] text-grad-cool">{lead}</span>
     <span class="text-grad-warm">{accent}</span>
   </h2>
@@ -22,3 +25,50 @@ const { lead, accent, subtitle, class: className = '' } = Astro.props;
     )
   }
 </div>
+
+<script>
+  // Escala cada título en móvil para que ocupe el máximo ancho posible
+  // en UNA sola línea, reduciéndolo solo si no cabe. En sm+ manda Tailwind.
+  const MOBILE = '(max-width: 639px)';
+  const MIN_PX = 32; // nunca más pequeño que esto
+  const MAX_PX = 76; // ni más grande que esto (títulos cortos)
+
+  function fitTitles() {
+    const isMobile = window.matchMedia(MOBILE).matches;
+    document.querySelectorAll<HTMLElement>('[data-fit-title]').forEach((el) => {
+      // Reset: dejamos que Tailwind gobierne en desktop.
+      el.style.fontSize = '';
+      el.style.whiteSpace = '';
+      el.style.display = '';
+      if (!isMobile) return;
+
+      const parent = el.parentElement;
+      if (!parent) return;
+
+      const available = parent.clientWidth; // ancho disponible antes de tocar el título
+      if (!available) return;
+
+      // inline-block + nowrap => el elemento se encoge al ancho REAL del texto,
+      // así medimos el texto y no el contenedor.
+      el.style.display = 'inline-block';
+      el.style.whiteSpace = 'nowrap';
+      const BASE = 40;
+      el.style.fontSize = `${BASE}px`;
+      const textWidth = el.getBoundingClientRect().width;
+      if (!textWidth) return;
+
+      let size = (BASE * available * 0.98) / textWidth; // 0.98 = colchón
+      size = Math.max(MIN_PX, Math.min(MAX_PX, size));
+      el.style.fontSize = `${size}px`;
+    });
+  }
+
+  const run = () => fitTitles();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(run);
+  }
+  window.addEventListener('load', run);
+  window.addEventListener('resize', run, { passive: true });
+  window.addEventListener('orientationchange', run);
+  run();
+</script>
