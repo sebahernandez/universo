@@ -5,7 +5,7 @@ import { cld, cldSrcset } from '../lib/cloudinary';
 
 const explorar = [
   { label: 'Servicios', href: '#que-podemos-hacer' },
-  { label: 'Proyectos', href: '#compras-envios' },
+  { label: 'Proyectos', href: '#proyectos' },
   { label: 'Nosotros', href: '#quienes-somos' },
   { label: 'Envíos', href: '#compras-envios' },
 ];
@@ -60,6 +60,10 @@ const ayuda = [
     <div>
       <h3 class="text-sm font-bold text-tinta">Contacto</h3>
       <a href={`mailto:${site.email}`} class="mt-4 block text-sm text-tinta-suave hover:text-rosa-fuerte">{site.email}</a>
+      <address class="mt-2 text-sm leading-relaxed text-tinta-suave not-italic">
+        {site.address.street}<br />
+        {site.address.locality}, {site.address.region}, Chile
+      </address>
     </div>
   </div>
 

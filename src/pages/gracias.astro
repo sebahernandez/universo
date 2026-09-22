@@ -6,7 +6,35 @@ import { cld } from '../lib/cloudinary';
 const REDIRECT_SECONDS = 6;
 ---
 
-<Layout title="¡Gracias! · Universo Crafter">
+<Layout
+  title="¡Gracias! · Universo Crafter"
+  description="Recibimos tu mensaje. Te responderemos pronto para ayudarte a darle forma a tu proyecto de papelería personalizada."
+  noindex
+>
+  <!--
+    Guarda de acceso: /gracias solo es válida si se llega tras enviar
+    el formulario. La bandera se pone en Contacto.astro al hacer submit.
+    Se ejecuta ANTES de renderizar el contenido para evitar parpadeo.
+  -->
+  <script is:inline>
+    (function () {
+      var KEY = 'uc:form-enviado';
+      try {
+        var sello = sessionStorage.getItem(KEY);
+        sessionStorage.removeItem(KEY); // un solo uso
+        var ok = false;
+        if (sello) {
+          var ts = parseInt(sello, 10);
+          // Válida solo si el envío ocurrió en los últimos 5 minutos.
+          ok = !isNaN(ts) && Date.now() - ts < 5 * 60 * 1000;
+        }
+        if (!ok) window.location.replace('/');
+      } catch (e) {
+        // Si sessionStorage no está disponible, no atrapamos al usuario.
+      }
+    })();
+  </script>
+
   <main
     class="grid min-h-screen place-items-center bg-[linear-gradient(90deg,#fdf0f5_0%,#fcf5fa_22%,#f4f5fc_50%,#e9f3fb_66%,#ece4fb_100%)] px-5 py-16"
   >

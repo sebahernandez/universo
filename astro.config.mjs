@@ -10,7 +10,11 @@ const SITE = 'https://www.universocrafter.cl';
 export default defineConfig({
   site: SITE,
   output: 'static',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/gracias'),
+    }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

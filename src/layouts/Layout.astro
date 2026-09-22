@@ -7,29 +7,41 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  noindex?: boolean;
 }
 
 const {
   title = 'Universo Crafter · Papelería creativa hecha para recordar',
   description = site.description,
   image = 'https://res.cloudinary.com/v5ovpy2d/image/upload/f_auto,q_auto,c_pad,b_auto,w_1200,h_630/impresora-banner-home.png',
+  noindex = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(image, Astro.site).href;
 
-// Schema.org LocalBusiness para SEO local (Chile).
+// Schema.org Store (LocalBusiness) para SEO local (Chile).
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'LocalBusiness',
+  '@type': 'Store',
+  '@id': `${Astro.site?.href}#organizacion`,
   name: site.name,
   description: site.description,
   url: Astro.site?.href,
   email: site.email,
   telephone: `+${site.whatsapp}`,
   image: ogImage,
+  logo: 'https://res.cloudinary.com/v5ovpy2d/image/upload/f_auto,q_auto/logo-universo-crafter.png',
+  priceRange: '$$',
   areaServed: { '@type': 'Country', name: 'Chile' },
-  address: { '@type': 'PostalAddress', addressCountry: 'CL' },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+    ...(site.address.postalCode ? { postalCode: site.address.postalCode } : {}),
+  },
   sameAs: [site.instagram, site.facebook],
 };
 ---
@@ -41,6 +53,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#fce4ec" />
@@ -69,6 +82,9 @@ const jsonLd = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
     <meta property="og:locale" content="es_CL" />
 
     <!-- Twitter -->
@@ -76,6 +92,7 @@ const jsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={title} />
 
     <script
       type="application/ld+json"

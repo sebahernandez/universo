@@ -48,6 +48,14 @@ const cards = [
             </a>
           ))
         }
+
+        <div class="flex items-center gap-4 rounded-tarjeta bg-lila/40 px-5 py-4 shadow-suave">
+          <span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-white/70 text-2xl" aria-hidden="true">📍</span>
+          <address class="text-base font-semibold leading-snug text-tinta not-italic">
+            {site.address.street}<br />
+            <span class="font-normal text-tinta-suave">{site.address.locality}, {site.address.region}</span>
+          </address>
+        </div>
       </div>
     </div>
 
@@ -164,3 +172,16 @@ const cards = [
     </div>
   </div>
 </section>
+
+<script>
+  // Marca que el usuario envió el formulario para autorizar el acceso a /gracias.
+  // El submit nativo solo se dispara si pasa la validación de campos requeridos.
+  const form = document.querySelector<HTMLFormElement>('#contacto form');
+  form?.addEventListener('submit', () => {
+    try {
+      sessionStorage.setItem('uc:form-enviado', String(Date.now()));
+    } catch (e) {
+      /* sessionStorage no disponible: el envío continúa igual */
+    }
+  });
+</script>
