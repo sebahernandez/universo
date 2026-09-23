@@ -11,9 +11,9 @@ const explorar = [
   { label: 'Envíos', href: '/#compras-envios' },
 ];
 const ayuda = [
-  { label: 'Preguntas frecuentes', href: '/#contacto' },
+  { label: 'Preguntas frecuentes', href: '/preguntas-frecuentes' },
   { label: 'Política de cookies', href: '/politica-cookies' },
-  { label: 'Términos y condiciones', href: '/#contacto' },
+  { label: 'Términos y condiciones', href: '/terminos-condiciones' },
 ];
 ---
 
@@ -71,8 +71,8 @@ const ayuda = [
       <h3 class="text-sm font-bold text-tinta">Contacto</h3>
       <a href={`mailto:${site.email}`} class="mt-4 block text-sm text-tinta-suave hover:text-rosa-fuerte">{site.email}</a>
       <address class="mt-2 text-sm leading-relaxed text-tinta-suave not-italic">
-        {site.address.street}<br />
-        {site.address.locality}, {site.address.region}, Chile
+        <span class="whitespace-nowrap">Santiago, Región Metropolitana.</span> Tienda online.<br />
+        Universo Crafter SpA.
       </address>
     </div>
   </div>

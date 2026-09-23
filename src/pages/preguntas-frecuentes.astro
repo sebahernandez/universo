@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { faq } from '../data/faq';
+import { whatsappLink } from '../data/site';
+
+// JSON-LD FAQPage derivado del MISMO array que se muestra, para que
+// el contenido estructurado coincida siempre con el visible.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faq.map((f) => ({
+    '@type': 'Question',
+    name: f.pregunta,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.respuesta,
+    },
+  })),
+};
+---
+
+<Layout
+  title="Preguntas frecuentes · Universo Crafter"
+  description="Resolvemos las dudas más comunes sobre nuestros productos personalizados, cómo comprar, plazos, envíos a todo Chile, pagos y cambios."
+>
+  <Header />
+
+  <main class="mx-auto max-w-3xl px-5 py-16 md:px-8">
+    <h1 class="text-3xl font-bold leading-tight text-tinta sm:text-4xl">
+      Preguntas frecuentes
+    </h1>
+    <p class="mt-4 max-w-xl text-lg leading-relaxed text-tinta-suave">
+      Aquí respondemos las dudas más comunes. Si no encuentras la tuya,
+      escríbenos y con gusto te ayudamos. ✨
+    </p>
+
+    <div class="mt-10 space-y-3">
+      {
+        faq.map((item) => (
+          <details class="group rounded-tarjeta border border-lila bg-white/80 shadow-suave">
+            <summary class="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 text-base font-bold text-tinta [&::-webkit-details-marker]:hidden">
+              {item.pregunta}
+              <span
+                class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-lila text-tinta transition-transform group-open:rotate-45"
+                aria-hidden="true"
+              >
+                +
+              </span>
+            </summary>
+            <p class="px-5 pb-5 text-sm leading-relaxed text-tinta-suave">
+              {item.respuesta}
+            </p>
+          </details>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 rounded-panel bg-lila/40 px-6 py-8 text-center shadow-suave">
+      <h2 class="text-xl font-bold text-tinta">¿No resolvimos tu duda?</h2>
+      <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-tinta-suave">
+        Escríbenos y conversemos sobre tu idea o proyecto. Estaremos felices de
+        ayudarte.
+      </p>
+      <div class="mt-5 flex flex-wrap justify-center gap-3">
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener"
+          class="rounded-suave bg-oscuro px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+        >
+          Escríbenos por WhatsApp
+        </a>
+        <a
+          href="/#contacto"
+          class="rounded-suave border border-lila-fuerte/60 bg-white px-6 py-3 text-sm font-semibold text-tinta transition-colors hover:bg-lila/50"
+        >
+          Ir al formulario de contacto
+        </a>
+      </div>
+    </div>
+
+    <p class="mt-10">
+      <a
+        href="/"
+        class="text-sm font-semibold text-tinta underline decoration-lila-fuerte underline-offset-2 hover:text-rosa-fuerte"
+        >← Volver al inicio</a
+      >
+    </p>
+  </main>
+
+  <Footer />
+
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+</Layout>
