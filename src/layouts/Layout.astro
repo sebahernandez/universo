@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { site } from '../data/site';
 import WhatsAppWidget from '../components/WhatsAppWidget.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 
 interface Props {
   title?: string;
@@ -59,6 +60,41 @@ const jsonLd = {
     <meta name="theme-color" content="#fce4ec" />
     <meta name="generator" content={Astro.generator} />
 
+    <!--
+      Google Consent Mode v2: por defecto TODO denegado. El banner de cookies
+      (CookieConsent.astro) hace `consent update` a "granted" sólo si el usuario
+      acepta. Así cualquier GA/Ads que se agregue a futuro respeta el
+      consentimiento desde el primer render.
+    -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        analytics_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500,
+      });
+    </script>
+
+    <!--
+      Ejemplo para activar Google Analytics a futuro respetando el consentimiento.
+      1) Pon el ID en src/data/site.ts -> analytics.gaId (ej: 'G-XXXXXXX').
+      2) Descomenta el bloque de abajo. El <script type="text/plain" data-uc-consent>
+         NO se ejecuta hasta que el usuario pulse "Aceptar"; el gestor de consentimiento
+         lo activa recién ahí, por lo que no se setean cookies antes.
+
+      {site.analytics?.gaId && (
+        <>
+          <script type="text/plain" data-uc-consent src={`https://www.googletagmanager.com/gtag/js?id=${site.analytics.gaId}`} async></script>
+          <script type="text/plain" data-uc-consent set:html={`gtag('js', new Date()); gtag('config', '${site.analytics.gaId}');`} />
+        </>
+      )}
+    -->
+
     <!-- Precarga de fuentes above-the-fold (locales) -->
     <link
       rel="preload"
@@ -101,6 +137,7 @@ const jsonLd = {
   </head>
   <body>
     <slot />
+    <CookieConsent />
     <WhatsAppWidget />
   </body>
 </html>

@@ -3,16 +3,17 @@ import { site } from '../data/site';
 import SocialIcon from './SocialIcon.astro';
 import { cld, cldSrcset } from '../lib/cloudinary';
 
+// Anclas absolutas (/#seccion) para que funcionen desde páginas internas.
 const explorar = [
-  { label: 'Servicios', href: '#que-podemos-hacer' },
-  { label: 'Proyectos', href: '#proyectos' },
-  { label: 'Nosotros', href: '#quienes-somos' },
-  { label: 'Envíos', href: '#compras-envios' },
+  { label: 'Servicios', href: '/#que-podemos-hacer' },
+  { label: 'Proyectos', href: '/#proyectos' },
+  { label: 'Nosotros', href: '/#quienes-somos' },
+  { label: 'Envíos', href: '/#compras-envios' },
 ];
 const ayuda = [
-  { label: 'Preguntas frecuentes', href: '#contacto' },
-  { label: 'Políticas', href: '#contacto' },
-  { label: 'Términos y condiciones', href: '#contacto' },
+  { label: 'Preguntas frecuentes', href: '/#contacto' },
+  { label: 'Política de cookies', href: '/politica-cookies' },
+  { label: 'Términos y condiciones', href: '/#contacto' },
 ];
 ---
 
@@ -46,6 +47,15 @@ const ayuda = [
         {ayuda.map((l) => (
           <li><a href={l.href} class="transition-colors hover:text-rosa-fuerte">{l.label}</a></li>
         ))}
+        <li>
+          <button
+            type="button"
+            onclick="window.ucConsent && window.ucConsent.open()"
+            class="text-left transition-colors hover:text-rosa-fuerte"
+          >
+            Preferencias de cookies
+          </button>
+        </li>
       </ul>
     </div>
 

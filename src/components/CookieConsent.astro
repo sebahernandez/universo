@@ -1,0 +1,183 @@
+---
+/*
+  Banner de consentimiento de cookies + gestor de consentimiento.
+
+  - Visual: barra/tarjeta inferior con "Aceptar" / "Rechazar".
+  - Interno (enforcement real): expone `window.ucConsent` y sólo ejecuta los
+    scripts de tracking marcados como <script type="text/plain" data-uc-consent>
+    cuando el usuario ACEPTA. Mientras no acepte, ese código nunca corre, así
+    que no se setean cookies de terceros. Complementa el Google Consent Mode v2
+    (por defecto "denied") declarado en Layout.astro.
+*/
+---
+
+<div
+  id="uc-cookie-banner"
+  class="fixed bottom-4 left-4 z-40 hidden max-w-[calc(100%-2rem)] sm:max-w-md"
+  role="dialog"
+  aria-live="polite"
+  aria-label="Aviso de cookies"
+>
+  <div class="rounded-tarjeta border border-lila bg-white/95 p-5 shadow-tarjeta backdrop-blur">
+    <div class="flex items-start gap-3">
+      <span class="text-2xl" aria-hidden="true">🍪</span>
+      <div>
+        <p class="text-sm font-bold text-tinta">Usamos cookies</p>
+        <p class="mt-1 text-sm leading-relaxed text-tinta-suave">
+          Usamos cookies propias para el funcionamiento del sitio y, con tu
+          permiso, para entender cómo se usa y mejorar tu experiencia. Puedes
+          aceptarlas o rechazarlas.
+          <a
+            href="/politica-cookies"
+            class="font-semibold text-tinta underline decoration-lila-fuerte underline-offset-2 hover:text-rosa-fuerte"
+            >Más información</a
+          >.
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-4 flex flex-col gap-2 sm:flex-row-reverse">
+      <button
+        type="button"
+        data-uc-accept
+        class="rounded-suave bg-oscuro px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+      >
+        Aceptar
+      </button>
+      <button
+        type="button"
+        data-uc-reject
+        class="rounded-suave border border-lila-fuerte/60 bg-lila/50 px-5 py-2.5 text-sm font-semibold text-tinta transition-colors hover:bg-lila"
+      >
+        Rechazar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function () {
+    var STORAGE_KEY = 'uc:consent';
+    var VERSION = 1; // súbelo si cambia la política para volver a preguntar.
+
+    function read() {
+      try {
+        var raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return null;
+        var data = JSON.parse(raw);
+        if (!data || data.v !== VERSION) return null;
+        return data;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function write(status) {
+      var data = { status: status, ts: Date.now(), v: VERSION };
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      } catch (e) {
+        /* modo privado / storage bloqueado: seguimos sin persistir */
+      }
+      return data;
+    }
+
+    // Activa los scripts de tracking bloqueados (type="text/plain" data-uc-consent).
+    // Al clonarlos a <script> ejecutable, el navegador recién ahí los corre.
+    function activateGatedScripts() {
+      var pending = document.querySelectorAll(
+        'script[type="text/plain"][data-uc-consent]'
+      );
+      pending.forEach(function (old) {
+        var s = document.createElement('script');
+        for (var i = 0; i < old.attributes.length; i++) {
+          var attr = old.attributes[i];
+          if (attr.name === 'type' || attr.name === 'data-uc-consent') continue;
+          s.setAttribute(attr.name, attr.value);
+        }
+        s.type = 'text/javascript';
+        if (old.textContent) s.textContent = old.textContent;
+        old.parentNode.replaceChild(s, old);
+      });
+    }
+
+    // Actualiza Google Consent Mode v2 (si gtag existe o existirá).
+    function updateGoogleConsent(granted) {
+      var value = granted ? 'granted' : 'denied';
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag('consent', 'update', {
+        ad_storage: value,
+        analytics_storage: value,
+        ad_user_data: value,
+        ad_personalization: value,
+      });
+    }
+
+    function applyConsent(granted) {
+      updateGoogleConsent(granted);
+      if (granted) activateGatedScripts();
+      try {
+        window.dispatchEvent(
+          new CustomEvent('uc:consent-change', {
+            detail: { granted: granted },
+          })
+        );
+      } catch (e) {
+        /* navegadores muy antiguos */
+      }
+    }
+
+    var banner = document.getElementById('uc-cookie-banner');
+    function show() {
+      if (banner) banner.classList.remove('hidden');
+    }
+    function hide() {
+      if (banner) banner.classList.add('hidden');
+    }
+
+    function decide(status) {
+      write(status);
+      hide();
+      applyConsent(status === 'accepted');
+    }
+
+    // API pública para el resto del sitio (footer, política de cookies, etc.).
+    window.ucConsent = {
+      get: function () {
+        var d = read();
+        return d ? d.status : null;
+      },
+      allowed: function () {
+        var d = read();
+        return !!d && d.status === 'accepted';
+      },
+      accept: function () {
+        decide('accepted');
+      },
+      reject: function () {
+        decide('rejected');
+      },
+      open: function () {
+        show();
+      },
+    };
+
+    // Estado inicial: si ya decidió, aplicamos su elección sin mostrar banner.
+    var saved = read();
+    if (saved) {
+      applyConsent(saved.status === 'accepted');
+    } else {
+      show();
+    }
+
+    if (banner) {
+      var acceptBtn = banner.querySelector('[data-uc-accept]');
+      var rejectBtn = banner.querySelector('[data-uc-reject]');
+      if (acceptBtn) acceptBtn.addEventListener('click', function () { decide('accepted'); });
+      if (rejectBtn) rejectBtn.addEventListener('click', function () { decide('rejected'); });
+    }
+  })();
+</script>
