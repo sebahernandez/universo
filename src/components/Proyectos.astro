@@ -72,7 +72,7 @@ import { cld, cldSrcset, cldHiRes, cldHiResSrcset } from '../lib/cloudinary';
 
   {/* Panel: marco redondeado; la imagen va cuadrada dentro */}
   <div
-    class="modal-panel relative z-10 flex w-full max-w-4xl flex-col overflow-hidden rounded-panel border border-white/50 bg-crema p-2.5 shadow-tarjeta sm:p-3"
+    class="modal-panel relative z-10 flex w-full max-w-4xl flex-col overflow-hidden rounded-panel border border-white/50 bg-crema shadow-tarjeta"
   >
     {/* Botón cerrar */}
     <button
@@ -86,19 +86,25 @@ import { cld, cldSrcset, cldHiRes, cldHiResSrcset } from '../lib/cloudinary';
       </svg>
     </button>
 
-    {/* Imagen cuadrada (sin radius); el radius lo pone el contenedor */}
-    <img
-      id="modal-img"
-      src=""
-      alt=""
-      width="1200"
-      height="964"
-      decoding="async"
-      class="modal-img block max-h-[80vh] w-full object-cover"
-    />
+    {/* Imagen a sangre: ocupa todo el ancho del panel, sin franjas de fondo */}
+    <div class="modal-media relative">
+      <img
+        id="modal-img"
+        src=""
+        alt=""
+        width="1200"
+        height="964"
+        decoding="async"
+        class="modal-img block max-h-[80vh] w-full object-cover"
+      />
+      {/* Spinner mientras carga la imagen (centrado sobre el área de la foto) */}
+      <div id="modal-loader" class="modal-loader" aria-hidden="true">
+        <span class="modal-spinner"></span>
+      </div>
+    </div>
 
     {/* Título de la imagen con diseño de marca */}
-    <div class="flex items-center gap-3.5 px-3 pb-2 pt-4 sm:px-4">
+    <div class="flex items-center gap-3.5 px-4 pb-4 pt-4 sm:px-5">
       {/* Ícono decorativo (chispa) en burbuja pastel */}
       <span
         class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[linear-gradient(160deg,#fce4ec_0%,#ece4fb_100%)] shadow-suave"
@@ -151,6 +157,33 @@ import { cld, cldSrcset, cldHiRes, cldHiResSrcset } from '../lib/cloudinary';
     opacity: 1;
   }
 
+  /* Spinner de carga: visible solo mientras el modal está cargando la imagen */
+  .modal-loader {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  .galeria-modal[data-loading='true'] .modal-loader {
+    opacity: 1;
+  }
+  .modal-spinner {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 3px solid rgb(185 167 240 / 0.25); /* lila-fuerte translúcido (track) */
+    border-top-color: var(--color-rosa-fuerte); /* rosa de marca (indicador) */
+    animation: modal-spin 0.8s linear infinite;
+  }
+  @keyframes modal-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .galeria-modal,
     .galeria-modal .modal-panel {
@@ -158,6 +191,9 @@ import { cld, cldSrcset, cldHiRes, cldHiResSrcset } from '../lib/cloudinary';
     }
     .galeria-modal .modal-panel {
       transform: none;
+    }
+    .modal-spinner {
+      animation-duration: 1.6s;
     }
   }
 </style>
@@ -177,8 +213,14 @@ import { cld, cldSrcset, cldHiRes, cldHiResSrcset } from '../lib/cloudinary';
 
     // Oculta la imagen hasta que la nueva termine de cargar (evita ver la anterior)
     img.classList.remove('is-ready');
-    const reveal = () => img.classList.add('is-ready');
+    modal.setAttribute('data-loading', 'true');
+    const reveal = () => {
+      img.classList.add('is-ready');
+      modal.setAttribute('data-loading', 'false');
+    };
     img.onload = reveal;
+    // Si la imagen falla, oculta el spinner en vez de girar para siempre
+    img.onerror = () => modal.setAttribute('data-loading', 'false');
     img.sizes = '(max-width: 768px) 94vw, (max-width: 1280px) 90vw, 1100px';
     img.srcset = el.dataset.srcset ?? '';
     img.src = el.dataset.full ?? '';
@@ -197,6 +239,7 @@ import { cld, cldSrcset, cldHiRes, cldHiResSrcset } from '../lib/cloudinary';
     if (!modal) return;
     modal.setAttribute('data-open', 'false');
     modal.setAttribute('aria-hidden', 'true');
+    modal.setAttribute('data-loading', 'false');
     document.body.classList.remove('modal-abierto');
     lastFocused?.focus();
   }
