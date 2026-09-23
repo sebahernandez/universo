@@ -6,21 +6,21 @@ export const site = {
   description:
     'Papelería creativa personalizada: invitaciones, recuerdos, fotografías y proyectos impresos a medida. Taller chileno con envíos a todo Chile. Cotiza por WhatsApp.',
   email: 'hola@universocrafter.cl',
-  // Dirección física del taller (NAP para SEO local).
+  // Tienda online (sin dirección de calle pública). Ubicación regional para SEO.
   address: {
-    street: 'Sergio Lemus Olea 1108',
-    locality: 'Talagante',
+    street: '',
+    locality: 'Santiago',
     region: 'Región Metropolitana',
     postalCode: '',
     country: 'CL',
-    display: 'Sergio Lemus Olea 1108, Talagante, Región Metropolitana, Chile',
+    display: 'Santiago, Región Metropolitana · Tienda online',
   },
   // Formato internacional sin espacios para enlaces de WhatsApp.
   whatsapp: '56935536385',
   whatsappDisplay: '+56 9 3553 6385',
   instagram: 'https://www.instagram.com/universocrafter',
   instagramHandle: '@universocrafter',
-  facebook: 'https://www.facebook.com/universocrafter',
+  facebook: 'https://www.facebook.com/universocrafterpenaflor/',
   facebookHandle: 'Universo Crafter',
   // Reemplaza con tu Access Key real de https://web3forms.com (gratis).
   web3formsKey: '991a877a-a91b-4920-9f4e-21f61a9049d6',
