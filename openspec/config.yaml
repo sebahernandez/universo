@@ -30,3 +30,23 @@ schema: spec-driven
 #     archive:
 #       guidance:
 #         - Summarize the archive outcome before finishing
+operations:
+  archive:
+    guidance:
+      - >-
+        Después de archivar exitosamente el cambio (y sincronizar specs si
+        aplica), PREGUNTA al usuario en una sola confirmación si desea ejecutar
+        las tres acciones de publicación: commit, push y zip. No las ejecutes
+        sin su confirmación explícita.
+      - >-
+        Si el usuario confirma, ejecútalas en este orden: (1) `git add -A` y
+        `git commit` con un mensaje que describa el cambio archivado (termina
+        el mensaje con la línea Co-Authored-By habitual); (2) `git push origin
+        main`; (3) genera el zip desplegable ejecutando primero `npm run build`
+        para tener un `dist/` fresco y luego empaquetándolo en la raíz como
+        `universo-dist.zip` (por ejemplo `cd dist && zip -qr
+        ../universo-dist.zip .`).
+      - >-
+        Si el usuario declina, termina sin ejecutar ninguna de las tres
+        acciones. Si confirma y algún paso falla, detente y reporta el error en
+        lugar de continuar con los siguientes; el archivado ya quedó hecho.
