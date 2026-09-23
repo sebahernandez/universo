@@ -112,7 +112,13 @@ body {
 .text-grad-cool,
 .text-grad-warm {
   display: inline-block;
-  padding-bottom: 0.08em; /* evita recortar descendentes (p, í) */
+  /* Colchón alrededor del texto: la tipografía manuscrita tiene ascendentes,
+     tildes, descendentes y remates/swashes (p. ej. la "S") que sobresalen de
+     la caja. El degradado con clip-text solo rellena la caja del elemento, así
+     que damos aire en los 4 lados para que el degradado cubra todo el glifo, y
+     lo compensamos con márgenes negativos para no alterar la maquetación. */
+  padding: 0.14em 0.12em;
+  margin: -0.14em -0.12em;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
