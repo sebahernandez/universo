@@ -5,7 +5,7 @@ import { site, whatsappLink } from '../data/site';
 ---
 
 <div
-  class="wa-widget fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 print:hidden sm:bottom-6 sm:right-6"
+  class="wa-widget pointer-events-none fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 print:hidden sm:bottom-6 sm:right-6"
 >
   <!-- Panel / burbuja de chat -->
   <div
@@ -80,7 +80,7 @@ import { site, whatsappLink } from '../data/site';
     aria-label="Abrir chat de WhatsApp"
     aria-expanded="false"
     aria-controls="wa-panel"
-    class="wa-fab flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-menta-fuerte text-oscuro shadow-[0_12px_28px_-8px_rgb(143_224_196/0.9)] outline-none transition-transform hover:-translate-y-0.5 focus-visible:ring-4 focus-visible:ring-menta"
+    class="wa-fab pointer-events-auto flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-menta-fuerte text-oscuro shadow-[0_12px_28px_-8px_rgb(143_224_196/0.9)] outline-none transition-transform hover:-translate-y-0.5 focus-visible:ring-4 focus-visible:ring-menta"
   >
     <!-- Icono WhatsApp (estado cerrado) -->
     <svg class="wa-icon-open h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
