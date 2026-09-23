@@ -1,7 +1,7 @@
 ---
 import DisplayTitle from './DisplayTitle.astro';
 import { galeria } from '../data/content';
-import { cld, cldSrcset } from '../lib/cloudinary';
+import { cld, cldSrcset, cldHiRes, cldHiResSrcset } from '../lib/cloudinary';
 ---
 
 <section id="proyectos" class="section-blend [--sec-from:var(--color-amarillo)] [--sec-to:var(--color-celeste)]">
@@ -21,8 +21,8 @@ import { cld, cldSrcset } from '../lib/cloudinary';
               type="button"
               class="galeria-item group relative block w-full cursor-pointer overflow-hidden rounded-suave focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-lila-fuerte/60"
               data-index={i}
-              data-full={cld(item.src, 1600)}
-              data-srcset={cldSrcset(item.src, [900, 1200, 1600])}
+              data-full={cldHiRes(item.src, 1600)}
+              data-srcset={cldHiResSrcset(item.src, [900, 1200, 1600])}
               data-alt={item.alt}
               aria-label={`Ampliar imagen: ${item.alt}`}
             >
