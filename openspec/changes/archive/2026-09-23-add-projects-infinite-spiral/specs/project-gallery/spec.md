@@ -1,9 +1,6 @@
-# project-gallery Specification
+# Spec Delta
 
-## Purpose
-Define el comportamiento de la galería de proyectos y su modal, con foco en que el modal presente la imagen del proyecto en la máxima calidad posible respetando su tamaño, a partir de assets de origen pequeño.
-
-## Requirements
+## ADDED Requirements
 
 ### Requirement: Presentación de proyectos como espiral auto-animado
 
@@ -41,3 +38,20 @@ Las imágenes del espiral SHALL conservar texto alternativo. Cuando el usuario i
 
 - **WHEN** el usuario tiene activada la preferencia de movimiento reducido
 - **THEN** el espiral no gira de forma continua (se pausa o reduce su movimiento)
+
+## REMOVED Requirements
+
+### Requirement: Modal en máxima calidad respetando su tamaño
+
+**Reason**: Se elimina el modal/lightbox de proyectos; la presentación pasa a ser el espiral auto-animado sin modal.
+**Migration**: Ya no hay vista ampliada por proyecto. Las imágenes se muestran dentro del efecto espiral; si en el futuro se necesita ver una imagen en grande, se planificará como un cambio aparte.
+
+### Requirement: La miniatura no aplica super-resolución
+
+**Reason**: Ya no existe la grilla de miniaturas; las imágenes se sirven para el espiral.
+**Migration**: El dimensionado/optimización de imágenes se define para el contexto del espiral (Cloudinary `f_auto,q_auto` al tamaño mostrado).
+
+### Requirement: Fuente única por proyecto
+
+**Reason**: El requisito describía la correspondencia miniatura↔modal, que desaparece al quitar el modal.
+**Migration**: Cada imagen del espiral proviene de su `public_id` de proyecto en `galeria`; no hay miniatura ni modal que emparejar.

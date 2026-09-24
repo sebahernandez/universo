@@ -76,14 +76,36 @@ const REDIRECT_SECONDS = 6;
 </Layout>
 
 <script define:vars={{ REDIRECT_SECONDS }}>
-  let restante = REDIRECT_SECONDS;
-  const nodo = document.getElementById('cuenta');
-  const intervalo = setInterval(() => {
-    restante -= 1;
-    if (nodo) nodo.textContent = String(Math.max(restante, 0));
-    if (restante <= 0) {
-      clearInterval(intervalo);
-      window.location.href = '/';
+  (() => {
+    // 1. Sanear entrada
+    const segundos = Number.isFinite(Number(REDIRECT_SECONDS))
+      ? Math.max(0, Math.floor(Number(REDIRECT_SECONDS)))
+      : 0;
+
+    // 2. Si no hay tiempo válido, redirigir ya (y salir)
+    if (segundos <= 0) {
+      window.location.replace('/');
+      return;
     }
-  }, 1000);
+
+    const nodo = document.getElementById('cuenta');
+    if (nodo) {
+      nodo.setAttribute('aria-live', 'polite');
+      nodo.textContent = segundos;
+    }
+
+    const inicio = performance.now(); // 3. Iniciar temporizador
+    
+    const intervalo = setInterval(() => {
+      const transcurrido = (performance.now() - inicio) / 1000;
+      const restante = Math.max(0, Math.ceil(segundos - transcurrido));
+
+      if (nodo) nodo.textContent = restante;
+
+      if (restante <= 0) {
+        clearInterval(intervalo);
+        window.location.replace('/');
+      }
+    }, 250);
+  })();
 </script>
