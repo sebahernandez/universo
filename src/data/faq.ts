@@ -33,7 +33,7 @@ export const faq: FaqItem[] = [
   {
     pregunta: '¿Cuánto demora mi pedido?',
     respuesta:
-      'El plazo depende del tipo de proyecto y se confirma al momento de cotizar. [PLACEHOLDER: plazo de producción estándar, ej. "entre X y Y días hábiles"].',
+      'El tiempo de entrega dependerá del tipo de proyecto, la cantidad de productos y nuestra carga de trabajo al momento de confirmar tu pedido. Una vez que conozcamos todos los detalles, te informaremos el plazo estimado antes de comenzar.',
   },
   {
     pregunta: '¿Hacen envíos a todo Chile?',
@@ -48,7 +48,7 @@ export const faq: FaqItem[] = [
   {
     pregunta: '¿Qué medios de pago aceptan?',
     respuesta:
-      'Coordinamos el pago al confirmar tu pedido. [PLACEHOLDER: medios de pago aceptados, ej. transferencia, débito/crédito, etc.].',
+      'Aceptamos pagos en efectivo, transferencia bancaria, tarjetas de débito y crédito Visa, Mastercard y American Express. También puedes pagar mediante Redcompra, Mercado Pago, Edenred, Pluxee, JUNAEB, Apple Pay, Google Pay y Samsung Pay.',
   },
   {
     pregunta: '¿Puedo pedir cambios en el diseño?',
