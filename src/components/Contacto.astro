@@ -1,6 +1,8 @@
 ---
 import { site, whatsappLink } from '../data/site';
 import { cld } from '../lib/cloudinary';
+import GradientText from './reactbits/GradientText.tsx';
+import { GRAD_COOL, GRAD_WARM, GRAD_DIRECTION } from '../data/gradients';
 
 // URL absoluta a la página de gracias (Web3Forms exige URL completa).
 // Astro.url refleja el host real: localhost en dev, dominio final en producción.
@@ -18,7 +20,7 @@ const cards = [
     <!-- Columna izquierda: intro + tarjetas -->
     <div>
       <h2 class="font-display text-5xl leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]">
-        <span class="text-grad-cool">Cuéntanos que</span>{' '}<span class="text-grad-warm">tienes en mente</span>
+        <GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION}>Cuéntanos que</GradientText>{' '}<GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION}>tienes en mente</GradientText>
       </h2>
       <p class="mt-6 max-w-md text-lg leading-relaxed text-tinta">
         Si tienes una idea, proyecto o cotización en mente, escríbenos y conversemos. Estaremos felices de

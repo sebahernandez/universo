@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
+import react from '@astrojs/react';
+
 // Cambia esto por el dominio final del sitio (usado para sitemap, canonical y OG).
 const SITE = 'https://www.universocrafter.cl';
 
@@ -10,11 +12,9 @@ const SITE = 'https://www.universocrafter.cl';
 export default defineConfig({
   site: SITE,
   output: 'static',
-  integrations: [
-    sitemap({
-      filter: (page) => !page.includes('/gracias'),
-    }),
-  ],
+  integrations: [sitemap({
+    filter: (page) => !page.includes('/gracias'),
+  }), react()],
   vite: {
     plugins: [tailwindcss()],
   },

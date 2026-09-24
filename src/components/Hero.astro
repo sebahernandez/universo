@@ -1,6 +1,8 @@
 ---
 import { cld, cldSrcset } from '../lib/cloudinary';
 import { whatsappLink } from '../data/site';
+import GradientText from './reactbits/GradientText.tsx';
+import { GRAD_COOL, GRAD_WARM, GRAD_DIRECTION } from '../data/gradients';
 
 const hero = 'impresora-banner-home.png';
 ---
@@ -14,7 +16,7 @@ const hero = 'impresora-banner-home.png';
         class="font-display whitespace-nowrap text-5xl leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
       >
         <span class="sr-only">Papelería Creativa</span>
-        <span class="text-grad-cool" aria-hidden="true">Papeleria</span>{' '}<span class="text-grad-warm" aria-hidden="true">Creativa</span>
+        <GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION} aria-hidden="true">Papeleria</GradientText>{' '}<GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION} aria-hidden="true">Creativa</GradientText>
       </h1>
       <p class="mt-4 text-base font-semibold tracking-[0.2em] text-tinta uppercase sm:text-lg">
         Hecha para recordar

@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { cld } from '../lib/cloudinary';
+import GradientText from '../components/reactbits/GradientText.tsx';
+import { GRAD_COOL, GRAD_WARM, GRAD_DIRECTION } from '../data/gradients';
 
 // Segundos antes de volver automáticamente al inicio.
 const REDIRECT_SECONDS = 6;
@@ -49,8 +51,7 @@ const REDIRECT_SECONDS = 6;
       />
 
       <h1 class="mt-6 font-display text-6xl leading-[0.95] sm:text-7xl">
-        <span class="text-grad-warm">¡Gracias por</span>
-        <span class="text-grad-cool">escribirnos!</span>
+        <GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION}>¡Gracias por</GradientText>{' '}<GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION}>escribirnos!</GradientText>
       </h1>
 
       <p class="mx-auto mt-6 max-w-md text-lg leading-relaxed text-tinta">

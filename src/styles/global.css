@@ -130,8 +130,47 @@ body {
   background-image: linear-gradient(100deg, #f7a8c4 0%, #f7b58a 55%, #f6d36b 100%);
 }
 
+/* Gradient Text (React Bits): degradado en flujo recortado al texto.
+   El componente GradientText.tsx aplica el background-image (colores/dirección)
+   y la duración por estilo inline; aquí va el resto del efecto. Se usa en línea
+   para convivir con los títulos display de una sola línea. */
+.animated-gradient-text {
+  display: inline;
+}
+.animated-gradient-text .text-content {
+  display: inline-block;
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation-name: rb-gradient-flow;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* Colchón para no recortar ascendentes, tildes y descendentes de la
+     tipografía manuscrita (igual criterio que .text-grad-*). */
+  padding: 0.14em 0.12em;
+  margin: -0.14em -0.12em;
+}
+@keyframes rb-gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  /* Sin movimiento: el degradado queda estático, como el diseño original. */
+  .animated-gradient-text .text-content {
+    animation: none;
+    background-position: 0% 50%;
   }
 }

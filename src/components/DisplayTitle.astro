@@ -1,5 +1,8 @@
 ---
 // Título display bicolor (imita el lettering del diseño).
+import GradientText from './reactbits/GradientText.tsx';
+import { GRAD_COOL, GRAD_WARM, GRAD_DIRECTION } from '../data/gradients';
+
 interface Props {
   lead: string; // primera parte (lila)
   accent: string; // segunda parte (rosa)
@@ -14,7 +17,7 @@ const { lead, accent, subtitle, class: className = '' } = Astro.props;
     data-fit-title
     class="font-display text-[2.75rem] leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
   >
-    <span class="text-grad-cool">{lead}</span>{' '}<span class="text-grad-warm">{accent}</span>
+    <GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION}>{lead}</GradientText>{' '}<GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION}>{accent}</GradientText>
   </h2>
   {
     subtitle && (
