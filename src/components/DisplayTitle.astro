@@ -15,7 +15,7 @@ const { lead, accent, subtitle, class: className = '' } = Astro.props;
 <div class={`text-center ${className}`}>
   <h2
     data-fit-title
-    class="font-display text-[2.75rem] leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
+    class="font-display text-[2.75rem] leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl 3xl:text-[6.5rem]"
   >
     <GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION}>{lead}</GradientText>{' '}<GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION}>{accent}</GradientText>
   </h2>

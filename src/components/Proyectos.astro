@@ -19,7 +19,7 @@ const spiralItems = galeria.map((item) => ({
       <div class="text-center lg:text-left">
         <h2
           data-fit-title
-          class="font-display text-[2.75rem] leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
+          class="font-display text-[2.75rem] leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl 3xl:text-[6.5rem]"
         >
           <GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION}>Nuestros</GradientText>{' '}<GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION}>Proyectos</GradientText>
         </h2>
@@ -39,7 +39,7 @@ const spiralItems = galeria.map((item) => ({
       {/* Columna derecha: espiral infinito de proyectos (auto-animado, sin modal).
          El mask degrada las tarjetas hacia transparente arriba y abajo, para que
          no se vea la línea de corte del contenedor en la transición del fondo. */}
-      <div class="spiral-fade relative h-[360px] w-full overflow-hidden sm:h-[460px] lg:h-[560px]">
+      <div class="spiral-fade relative h-90 w-full overflow-hidden sm:h-115 lg:h-140">
         <InfiniteSpiral
           client:load
           items={spiralItems}

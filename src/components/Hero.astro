@@ -2,18 +2,20 @@
 import { cld, cldSrcset } from '../lib/cloudinary';
 import { whatsappLink } from '../data/site';
 import GradientText from './reactbits/GradientText.tsx';
+import TextLoop from './reactbits/TextLoop.tsx';
 import { GRAD_COOL, GRAD_WARM, GRAD_DIRECTION } from '../data/gradients';
 
 const hero = 'impresora-banner-home.png';
 ---
 
 <section id="inicio" class="section-blend relative overflow-hidden [--sec-from:var(--color-rosa)] [--sec-to:var(--color-celeste)]">
+  <div id="inicio-main" class="relative">
   <!-- Contenido centrado en el contenedor del sitio -->
-  <div class="mx-auto max-w-sitio px-5 py-16 md:flex md:min-h-[560px] md:items-center md:px-8 md:py-24 lg:min-h-[680px]">
-    <div class="min-w-0 md:max-w-[50%] lg:max-w-[54%]">
+  <div class="mx-auto max-w-sitio px-5 pt-28 pb-16 md:flex md:min-h-140 md:items-center md:px-8 md:pt-32 md:pb-24 lg:min-h-170">
+    <div class="min-w-0 md:max-w-1/2 lg:max-w-[54%]">
       <h1
         data-fit-title
-        class="font-display whitespace-nowrap text-5xl leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl min-[1440px]:text-[6.5rem]"
+        class="font-display whitespace-nowrap text-5xl leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl 3xl:text-[6.5rem]"
       >
         <span class="sr-only">Papelería Creativa</span>
         <GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION} aria-hidden="true">Papeleria</GradientText>{' '}<GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION} aria-hidden="true">Creativa</GradientText>
@@ -58,12 +60,18 @@ const hero = 'impresora-banner-home.png';
     loading="eager"
     fetchpriority="high"
     decoding="async"
-    class="-mt-4 w-full max-w-none pb-16 will-change-transform md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:w-[46vw] md:max-w-[440px] md:-translate-y-1/2 md:pb-0 lg:w-[42vw] lg:max-w-[640px]"
+    class="-mt-4 w-full max-w-none pb-16 will-change-transform md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:w-[46vw] md:max-w-110 md:-translate-y-1/2 md:pb-0 lg:w-[42vw] lg:max-w-160"
   />
+  </div>
+
+  <!-- Espacio transparente para conservar el fundido rosa a celeste. -->
+  <div class="relative mt-6 pb-8">
+    <TextLoop client:load text="Papelería creativa ✦ Hecha para recordar" />
+  </div>
 </section>
 
 <script>
-  const heroSection = document.getElementById('inicio');
+  const heroSection = document.getElementById('inicio-main');
   const heroImg = document.getElementById('hero-img');
   const heroReduce = matchMedia('(prefers-reduced-motion: reduce)');
   // Solo en móvil: en desktop la imagen usa su propio transform de centrado.
