@@ -28,10 +28,10 @@ const hero = 'impresora-banner-home.png';
         invitaciones y proyectos en papel que transforman una idea en algo que
         puedes tocar, guardar y regalar.
       </p>
-      <div class="mt-8 flex flex-wrap gap-4">
+      <div class="mt-8 flex flex-nowrap gap-3 sm:gap-4">
         <a
           href="/#proyectos"
-          class="rounded-full bg-oscuro px-7 py-3.5 text-sm font-semibold text-white shadow-suave transition-transform hover:-translate-y-0.5"
+          class="flex-1 rounded-full bg-oscuro px-4 py-3.5 text-center text-sm font-semibold text-white shadow-suave transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
         >
           Explorar nuestros trabajos
         </a>
@@ -39,7 +39,7 @@ const hero = 'impresora-banner-home.png';
           href={whatsappLink}
           target="_blank"
           rel="noopener"
-          class="rounded-full border border-oscuro/80 bg-white/60 px-7 py-3.5 text-sm font-semibold text-tinta transition-transform hover:-translate-y-0.5"
+          class="flex-1 rounded-full border border-oscuro/80 bg-white/60 px-4 py-3.5 text-center text-sm font-semibold text-tinta transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
         >
           Cotizar un proyecto
         </a>
@@ -47,20 +47,20 @@ const hero = 'impresora-banner-home.png';
     </div>
   </div>
 
-  <!-- Imagen a tope del borde derecho (desktop); apilada bajo el texto en móvil -->
+  <!-- Imagen a tope del borde derecho (solo desktop); oculta en móvil -->
   <img
     id="hero-img"
     data-parallax="0.09"
     src={cld(hero, 720)}
     srcset={cldSrcset(hero, [480, 720, 1082])}
-    sizes="(max-width: 767px) 85vw, (max-width: 1023px) 46vw, 42vw"
+    sizes="46vw"
     width="1082"
     height="1174"
     alt="Herramientas de papelería creativa: impresora fotográfica, máquina de chapas y plotter de corte en tonos pastel"
     loading="eager"
     fetchpriority="high"
     decoding="async"
-    class="-mt-4 w-full max-w-none pb-16 will-change-transform md:absolute md:right-0 md:top-1/2 md:mx-0 md:mt-0 md:w-[46vw] md:max-w-110 md:-translate-y-1/2 md:pb-0 lg:w-[42vw] lg:max-w-160"
+    class="hidden will-change-transform md:absolute md:right-0 md:top-1/2 md:mx-0 md:block md:w-[46vw] md:max-w-110 md:-translate-y-1/2 lg:w-[42vw] lg:max-w-160"
   />
   </div>
 
@@ -71,38 +71,7 @@ const hero = 'impresora-banner-home.png';
 </section>
 
 <script>
-  const heroSection = document.getElementById('inicio-main');
-  const heroImg = document.getElementById('hero-img');
-  const heroReduce = matchMedia('(prefers-reduced-motion: reduce)');
-  // Solo en móvil: en desktop la imagen usa su propio transform de centrado.
-  const heroMobile = matchMedia('(max-width: 767px)');
-
-  if (heroSection && heroImg && !heroReduce.matches) {
-    const speed = parseFloat(heroImg.dataset.parallax || '0');
-    let ticking = false;
-
-    function update() {
-      if (heroMobile.matches) {
-        const rect = heroSection!.getBoundingClientRect();
-        // 0 cuando el centro de la sección coincide con el centro del viewport
-        const progress = rect.top + rect.height / 2 - window.innerHeight / 2;
-        heroImg!.style.transform = `translate3d(0, ${(progress * speed).toFixed(1)}px, 0)`;
-      } else {
-        // Deja que las clases de Tailwind (md:-translate-y-1/2) controlen el desktop
-        heroImg!.style.transform = '';
-      }
-      ticking = false;
-    }
-
-    function onScroll() {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    update();
-  }
+  // La imagen del hero solo existe en desktop (hidden md:block), por lo que no
+  // se requiere lógica de parallax para móvil. En desktop las clases de Tailwind
+  // (md:-translate-y-1/2) controlan el centrado vertical.
 </script>

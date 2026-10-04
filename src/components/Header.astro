@@ -358,34 +358,6 @@ const accents = [
 </style>
 
 <script>
-  const siteHeader = document.querySelector<HTMLElement>('.site-header');
-  const hero = document.getElementById('inicio');
-
-  // Alterna data-scrolled cuando el Hero deja de asomar bajo el header,
-  // para pasar del fondo transparente al fondo esmerilado.
-  if (siteHeader && hero) {
-    let observer: IntersectionObserver | null = null;
-
-    function observeHero() {
-      observer?.disconnect();
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          siteHeader!.setAttribute('data-scrolled', String(!entry.isIntersecting));
-        },
-        { rootMargin: `-${siteHeader!.offsetHeight}px 0px 0px 0px`, threshold: 0 },
-      );
-      observer.observe(hero);
-    }
-
-    observeHero();
-
-    let resizeTimer: ReturnType<typeof setTimeout> | undefined;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(observeHero, 150);
-    });
-  }
-
   const toggle = document.getElementById('menu-toggle');
   const menu = document.getElementById('mobile-menu');
   const backdrop = document.getElementById('menu-backdrop');
