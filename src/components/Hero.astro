@@ -31,17 +31,19 @@ const hero = 'impresora-banner-home.png';
       <div class="mt-8 flex flex-nowrap gap-3 sm:gap-4">
         <a
           href="/#proyectos"
-          class="flex-1 rounded-full bg-oscuro px-4 py-3.5 text-center text-sm font-semibold text-white shadow-suave transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
+          class="flex-1 rounded-full bg-oscuro px-4 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-white shadow-suave transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
         >
-          Explorar nuestros trabajos
+          <span class="sm:hidden">Ver trabajos</span>
+          <span class="hidden sm:inline">Explorar nuestros trabajos</span>
         </a>
         <a
           href={whatsappLink}
           target="_blank"
           rel="noopener"
-          class="flex-1 rounded-full border border-oscuro/80 bg-white/60 px-4 py-3.5 text-center text-sm font-semibold text-tinta transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
+          class="flex-1 rounded-full border border-oscuro/80 bg-white/60 px-4 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-tinta transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
         >
-          Cotizar un proyecto
+          <span class="sm:hidden">Cotizar proyecto</span>
+          <span class="hidden sm:inline">Cotizar un proyecto</span>
         </a>
       </div>
     </div>
