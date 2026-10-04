@@ -24,6 +24,8 @@ export const site = {
   facebookHandle: 'Universo Crafter',
   // Reemplaza con tu Access Key real de https://web3forms.com (gratis).
   web3formsKey: '991a877a-a91b-4920-9f4e-21f61a9049d6',
+  // Site key de Cloudflare Turnstile para el formulario de contacto.
+  turnstileSiteKey: '0x4AAAAAAFNu5InKxM8PnfwP',
   // Analítica opcional (respeta el consentimiento de cookies). Vacío = sin tracker.
   // Pon aquí el ID de Google Analytics (ej: 'G-XXXXXXX') y descomenta el bloque
   // gated en Layout.astro para activarlo sólo tras "Aceptar".

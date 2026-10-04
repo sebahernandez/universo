@@ -99,6 +99,8 @@ const cards = [
           <input type="hidden" name="from_name" value="Universo Crafter Web" />
           <!-- Redirige a nuestra página de gracias tras el envío -->
           <input type="hidden" name="redirect" value={graciasUrl} />
+          <!-- Reply-to explícito: se sincroniza con el campo "email" antes de enviar -->
+          <input type="hidden" name="replyto" value="" />
           <!-- Honeypot anti-spam -->
           <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" />
 
@@ -140,6 +142,9 @@ const cards = [
             ></textarea>
           </div>
 
+          <!-- Verificación anti-bot (Cloudflare Turnstile) -->
+          <div class="cf-turnstile" data-sitekey={site.turnstileSiteKey}></div>
+
           <button
             type="submit"
             class="relative w-full rounded-2xl bg-oscuro px-6 py-4.5 text-center text-base font-semibold text-white transition-transform hover:-translate-y-0.5"
@@ -166,11 +171,21 @@ const cards = [
   </div>
 </section>
 
+<!-- Carga el widget de Cloudflare Turnstile (verificación anti-bot del formulario) -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>
+
 <script>
   // Marca que el usuario envió el formulario para autorizar el acceso a /gracias.
   // El submit nativo solo se dispara si pasa la validación de campos requeridos.
   const form = document.querySelector<HTMLFormElement>('#contacto form');
   form?.addEventListener('submit', () => {
+    // Sincroniza el reply-to con el email ingresado antes de que el navegador envíe el POST.
+    const emailInput = form.querySelector<HTMLInputElement>('#email');
+    const replytoInput = form.querySelector<HTMLInputElement>('input[name="replyto"]');
+    if (emailInput && replytoInput) {
+      replytoInput.value = emailInput.value;
+    }
+
     try {
       sessionStorage.setItem('uc:form-enviado', String(Date.now()));
     } catch (e) {
