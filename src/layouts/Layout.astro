@@ -8,14 +8,14 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
-  noindex?: boolean;
+  robots?: string;
 }
 
 const {
   title = 'Universo Crafter · Papelería creativa hecha para recordar',
   description = site.description,
   image = 'https://res.cloudinary.com/v5ovpy2d/image/upload/f_auto,q_auto,c_pad,b_auto,w_1200,h_630/impresora-banner-home.png',
-  noindex = false,
+  robots,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -55,7 +55,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    {robots && <meta name="robots" content={robots} />}
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#fce4ec" />
