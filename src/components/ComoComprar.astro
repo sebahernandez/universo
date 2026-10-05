@@ -1,0 +1,68 @@
+---
+import { pasosCompra } from '../data/pasosCompra';
+
+const iconPaths: Record<string, string> = {
+  sparkles: 'M12 4l1.5 4L18 9.5 13.5 11 12 15l-1.5-4L6 9.5 10.5 8 12 4Z',
+  chat: 'M4 5h16v10H9l-4 3V5Z',
+  truck: 'M3 7h10v8H3zM13 10h3.5L20 13v2h-7V10ZM7 18.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3Zm9 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3Z',
+};
+const cardBg: Record<string, string> = {
+  rosa: 'bg-rosa/60',
+  amarillo: 'bg-amarillo/60',
+  celeste: 'bg-celeste/60',
+};
+const accent: Record<string, string> = {
+  rosa: 'text-rosa-fuerte',
+  amarillo: 'text-amarillo-fuerte',
+  celeste: 'text-celeste-fuerte',
+};
+---
+
+<section class="section-blend [--sec-from:var(--color-lila-claro)] [--sec-to:var(--color-celeste)]">
+  <!-- Ancla equivalente para el enlace "Envíos" del Footer (no se modifica el Footer). -->
+  <span id="compras-envios" class="block"></span>
+  <div class="mx-auto max-w-sitio px-5 py-14 md:px-8 md:py-20">
+    <h2 class="text-center font-display text-4xl leading-[1.1] text-tinta sm:text-5xl">
+      ¿Cómo <span class="text-rosa-fuerte">comprar</span>?
+    </h2>
+    <p class="mt-2 text-center text-base text-tinta-suave">Es muy fácil y rápido.</p>
+
+    <div class="mt-10 grid gap-4 md:grid-cols-3 md:gap-6">
+      {
+        pasosCompra.map((p) => (
+          <article class={`relative rounded-panel ${cardBg[p.color]} p-6`}>
+            <div class="flex items-start justify-between gap-4">
+              <span class={`font-display text-3xl leading-none whitespace-nowrap ${accent[p.color]}`}>{p.num}</span>
+              {p.img ? (
+                <img
+                  src={p.img}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  class="pointer-events-none absolute -right-3 -top-5 h-24 w-24 object-contain md:-right-4 md:-top-6 md:h-28 md:w-28"
+                />
+              ) : (
+                <span class={`grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/70 ${accent[p.color]}`}>
+                  <svg
+                    class="h-6 w-6"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d={iconPaths[p.icon]} />
+                  </svg>
+                </span>
+              )}
+            </div>
+            <h3 class="mt-4 text-lg font-bold text-tinta">{p.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-tinta-suave">{p.text}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

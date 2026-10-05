@@ -42,8 +42,7 @@ export const whatsappLink = `https://wa.me/${site.whatsapp}?text=${encodeURIComp
 // páginas internas (ej: /politica-cookies): navegan a la home y saltan a la sección.
 export const navLinks = [
   { label: 'Inicio', href: '/#inicio' },
-  { label: '¿Quiénes somos?', href: '/#quienes-somos' },
-  { label: '¿Qué podemos hacer?', href: '/#que-podemos-hacer' },
-  { label: 'Compras y envíos', href: '/#compras-envios' },
+  { label: 'Productos', href: '/#productos' },
+  { label: 'Nosotros', href: '/#nosotros' },
   { label: 'Contacto', href: '/#contacto' },
 ] as const;

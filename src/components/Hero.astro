@@ -1,79 +1,90 @@
 ---
-import { cld, cldSrcset } from '../lib/cloudinary';
-import { whatsappLink } from '../data/site';
-import GradientText from './reactbits/GradientText.tsx';
+import { cld } from '../lib/cloudinary';
 import TextLoop from './reactbits/TextLoop.tsx';
-import { GRAD_COOL, GRAD_WARM, GRAD_DIRECTION } from '../data/gradients';
 
-const hero = 'impresora-banner-home.png';
+// Imágenes de fondo del Hero (Cloudinary), servidas optimizadas vía cld().
+// Fondo distinto por breakpoint: vertical en móvil, horizontal en escritorio.
+const heroBgDesktop = cld(
+  'https://res.cloudinary.com/v5ovpy2d/image/upload/v1791166382/bg-hero-universocrafter.avif',
+  1920,
+);
+const heroBgMobile = cld(
+  'https://res.cloudinary.com/v5ovpy2d/image/upload/v1791166852/bg-movil-universocrafter.avif',
+  900,
+);
 ---
 
-<section id="inicio" class="section-blend relative overflow-hidden [--sec-from:var(--color-rosa)] [--sec-to:var(--color-celeste)]">
-  <div id="inicio-main" class="relative">
-  <!-- Contenido centrado en el contenedor del sitio -->
-  <div class="mx-auto max-w-sitio px-5 pt-28 pb-16 md:flex md:min-h-140 md:items-center md:px-8 md:pt-32 md:pb-24 lg:min-h-170">
-    <div class="min-w-0 md:max-w-1/2 lg:max-w-[54%]">
-      <h1
-        data-fit-title
-        class="font-display whitespace-nowrap text-5xl leading-[1.1] sm:text-7xl lg:text-7xl xl:text-8xl 3xl:text-[6.5rem]"
-      >
-        <span class="sr-only">Papelería Creativa</span>
-        <GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION} aria-hidden="true">Papeleria</GradientText>{' '}<GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION} aria-hidden="true">Creativa</GradientText>
-      </h1>
-      <p class="mt-4 text-base font-semibold tracking-[0.2em] text-tinta uppercase sm:text-lg">
-        Hecha para recordar
-      </p>
-      <p class="mt-6 max-w-xl text-lg leading-relaxed text-tinta">
-        Diseñamos e imprimimos piezas personalizadas, recuerdos, fotografías,
-        invitaciones y proyectos en papel que transforman una idea en algo que
-        puedes tocar, guardar y regalar.
-      </p>
-      <div class="mt-8 flex flex-nowrap gap-3 sm:gap-4">
-        <a
-          href="/#proyectos"
-          class="flex-1 rounded-full bg-oscuro px-4 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-white shadow-suave transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
-        >
-          <span class="sm:hidden">Ver trabajos</span>
-          <span class="hidden sm:inline">Explorar nuestros trabajos</span>
-        </a>
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener"
-          class="flex-1 rounded-full border border-oscuro/80 bg-white/60 px-4 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-tinta transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
-        >
-          <span class="sm:hidden">Cotizar proyecto</span>
-          <span class="hidden sm:inline">Cotizar un proyecto</span>
-        </a>
+<section id="inicio" class="relative overflow-hidden">
+  <!-- Fondo móvil (vertical): solo hasta md. -->
+  <div
+    class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat md:hidden"
+    style={`background-image:url('${heroBgMobile}')`}
+    aria-hidden="true"
+  >
+  </div>
+  <!-- Fondo escritorio/tablet (horizontal): desde md. -->
+  <div
+    class="absolute inset-0 z-0 hidden bg-cover bg-center bg-no-repeat md:block"
+    style={`background-image:url('${heroBgDesktop}')`}
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Velo suave para legibilidad del texto (más opaco a la izquierda, se desvanece a la derecha). -->
+  <div
+    class="pointer-events-none absolute inset-0 z-0"
+    style="background:linear-gradient(100deg,rgba(255,255,255,0.72) 0%,rgba(255,255,255,0.4) 38%,rgba(255,255,255,0) 68%)"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div id="inicio-main" class="relative z-10">
+    <div class="mx-auto flex min-h-[30rem] max-w-sitio flex-col items-center justify-center px-5 pt-28 pb-10 text-center sm:min-h-[34rem] md:min-h-140 md:px-8 md:pt-32 md:pb-20 lg:min-h-170">
+      <div class="min-w-0">
+        <!-- Badge de categoría -->
+        <span class="inline-block rounded-full bg-rosa px-4 py-1.5 text-xs font-bold tracking-[0.18em] text-rosa-fuerte uppercase">
+          Papelería Creativa
+        </span>
+
+        <h1 class="mt-5 font-display text-5xl leading-[1.08] text-black sm:text-6xl lg:text-7xl xl:text-8xl">
+          <span class="block">Ideas que</span>
+          <span class="block">hacen tu mundo</span>
+          <span class="block">más lindo</span>
+        </h1>
+
+        <p class="mx-auto mt-6 max-w-md text-base leading-relaxed text-black sm:text-lg">
+          Papelería, stickers y productos creativos para regalar, decorar y
+          organizar tu día a día.
+        </p>
+
+        <div class="mt-8 flex flex-nowrap justify-center gap-3 sm:gap-4">
+          <a
+            href="/#productos"
+            class="flex-1 rounded-full bg-oscuro px-5 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-white shadow-suave transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
+          >
+            Ver productos
+          </a>
+          <a
+            href="/#nosotros"
+            class="flex-1 rounded-full border border-oscuro/80 bg-white/70 px-5 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-black transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
+          >
+            Conócenos
+          </a>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Imagen a tope del borde derecho (solo desktop); oculta en móvil -->
-  <img
-    id="hero-img"
-    data-parallax="0.09"
-    src={cld(hero, 720)}
-    srcset={cldSrcset(hero, [480, 720, 1082])}
-    sizes="46vw"
-    width="1082"
-    height="1174"
-    alt="Herramientas de papelería creativa: impresora fotográfica, máquina de chapas y plotter de corte en tonos pastel"
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-    class="hidden will-change-transform md:absolute md:right-0 md:top-1/2 md:mx-0 md:block md:w-[46vw] md:max-w-110 md:-translate-y-1/2 lg:w-[42vw] lg:max-w-160"
-  />
+  <!-- Fundido inferior hacia el color de la sección siguiente (sin costura). -->
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32"
+    style="background:linear-gradient(180deg,rgba(242,240,254,0) 0%,var(--color-lila-claro) 100%)"
+    aria-hidden="true"
+  >
   </div>
 
-  <!-- Espacio transparente para conservar el fundido rosa a celeste. -->
-  <div class="relative mt-6 pb-8">
-    <TextLoop client:load text="Papelería creativa ✦ Hecha para recordar" />
+  <!-- Cinta ondulada al cierre de Inicio (React Bits: TextLoop). -->
+  <div class="relative z-10 mt-6 pb-8">
+    <TextLoop client:load text="Pequeños detalles, grandes historias" />
   </div>
 </section>
-
-<script>
-  // La imagen del hero solo existe en desktop (hidden md:block), por lo que no
-  // se requiere lógica de parallax para móvil. En desktop las clases de Tailwind
-  // (md:-translate-y-1/2) controlan el centrado vertical.
-</script>

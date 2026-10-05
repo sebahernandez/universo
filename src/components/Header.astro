@@ -183,29 +183,15 @@ const accents = [
   /* ---- Menú flotante estilo glass: una isla con esquinas curvadas que
          sólo abarca al menú y deja ver el Hero (a tope arriba) por detrás ---- */
   .site-nav {
-    background: rgb(255 255 255 / 0.5);
-    border: 1px solid rgb(255 255 255 / 0.55);
+    /* Fondo blanco sólido en móvil y escritorio (sin vidrio esmerilado). */
+    background: #ffffff;
+    border: 1px solid rgb(43 36 54 / 0.06);
     box-shadow: 0 8px 30px -10px rgb(43 36 54 / 0.18);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    transition:
-      background 0.4s ease,
-      box-shadow 0.4s ease,
-      backdrop-filter 0.4s ease;
+    transition: box-shadow 0.4s ease;
   }
-  /* Al bajar del Hero: la isla se vuelve un poco más opaca y con más sombra. */
+  /* Al bajar del Hero: el fondo sigue blanco y solo se intensifica la sombra. */
   .site-header[data-scrolled='true'] .site-nav {
-    background: rgb(255 255 255 / 0.68);
     box-shadow: 0 14px 40px -12px rgb(43 36 54 / 0.28);
-  }
-  /* Sin soporte de backdrop-filter: subir opacidad para no perder contraste. */
-  @supports not (backdrop-filter: blur(1px)) {
-    .site-nav {
-      background: rgb(255 255 255 / 0.9);
-    }
-    .site-header[data-scrolled='true'] .site-nav {
-      background: rgb(255 255 255 / 0.95);
-    }
   }
 
   /* ---- Subrayado animado de los enlaces de escritorio ---- */
@@ -247,22 +233,15 @@ const accents = [
       height: 2.25rem;
       width: 2.25rem;
       border-radius: 9999px;
-      color: var(--color-tinta-suave);
-      background: rgb(255 255 255 / 0.5);
-      border: 1px solid rgb(255 255 255 / 0.6);
-      box-shadow: 0 6px 16px -8px rgb(43 36 54 / 0.2);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid currentColor;
+      color: var(--color-lila-fuerte);
       transition:
         color 0.25s ease,
-        background 0.25s ease,
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
+        border-color 0.25s ease,
+        transform 0.25s ease;
     }
     .social-chip:hover {
-      background: #fff;
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px -8px rgb(43 36 54 / 0.28);
     }
     .social-chip:focus-visible {
       outline: 2px solid var(--color-rosa-fuerte);

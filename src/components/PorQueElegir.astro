@@ -1,0 +1,77 @@
+---
+import { beneficios } from '../data/beneficios';
+
+// Íconos de línea (outline) por clave. Se usa stroke=currentColor.
+const iconPaths: Record<string, string> = {
+  heart: 'M12 21C12 21 4 16 4 9.5 4 7 6 5 8.5 5c1.6 0 3 .8 3.5 2 .5-1.2 1.9-2 3.5-2C18 5 20 7 20 9.5 20 16 12 21 12 21Z',
+  leaf: 'M5 21c7 0 14-4 15-16C9 6 4 12 5 21Zm3-3c1-4 4-7 8-9',
+  truck: 'M3 7h10v8H3zM13 10h3.5L20 13v2h-7V10ZM7 18.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3Zm9 0a1.5 1.5 0 100-3 1.5 1.5 0 000 3Z',
+  star: 'M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.2l1-5.8L3.5 9.2l5.9-.9L12 3Z',
+};
+
+const circleBg: Record<string, string> = {
+  rosa: 'bg-rosa',
+  menta: 'bg-menta',
+  celeste: 'bg-celeste',
+  amarillo: 'bg-amarillo',
+};
+const iconFg: Record<string, string> = {
+  rosa: 'text-rosa-fuerte',
+  menta: 'text-menta-fuerte',
+  celeste: 'text-celeste-fuerte',
+  amarillo: 'text-amarillo-fuerte',
+};
+---
+
+<section class="section-blend [--sec-from:var(--color-lila-claro)] [--sec-to:var(--color-blanco-lila)]">
+  <div class="mx-auto max-w-sitio px-5 py-14 md:px-8 md:py-20">
+    <h2 class="text-center font-display text-4xl leading-[1.1] text-tinta sm:text-5xl">
+      ¿Por qué elegir <span class="text-rosa-fuerte">Universo Crafter</span>?
+    </h2>
+
+    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+      {
+        beneficios.map((b) => (
+          <article class="rounded-tarjeta border border-tinta/10 bg-white px-4 py-6 text-center shadow-suave sm:px-6">
+            {b.image ? (
+              <img
+                src={b.image}
+                alt=""
+                class="mx-auto h-20 w-20 object-contain sm:h-24 sm:w-24"
+                loading="lazy"
+                decoding="async"
+                aria-hidden="true"
+              />
+            ) : (
+              <span class={`mx-auto grid h-14 w-14 place-items-center rounded-full ${circleBg[b.color]}`}>
+                <svg
+                  class={`h-7 w-7 ${iconFg[b.color]}`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d={iconPaths[b.icon]} />
+                </svg>
+              </span>
+            )}
+            <h3 class="mt-4 text-base font-bold text-tinta">{b.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-tinta-suave">{b.text}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 text-center">
+      <a
+        href="/#nosotros"
+        class="inline-block rounded-full bg-oscuro px-8 py-4 text-sm font-semibold text-white shadow-suave transition-transform hover:-translate-y-0.5"
+      >
+        Conoce más sobre nosotros
+      </a>
+    </div>
+  </div>
+</section>
