@@ -159,7 +159,7 @@ const accents = [
             href={whatsappLink}
             target="_blank"
             rel="noopener"
-            class="flex min-h-13 flex-1 items-center justify-center gap-2.5 rounded-2xl bg-oscuro px-5 py-3.5 text-base font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
+            class="menu-wa flex min-h-13 min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-oscuro px-3 py-3.5 font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
           >
             <SocialIcon name="whatsapp" />
             Escríbenos por WhatsApp
@@ -180,6 +180,11 @@ const accents = [
 </header>
 
 <style>
+  /* CTA de WhatsApp del menú móvil: texto fluido para que quepa en una línea. */
+  .menu-wa {
+    font-size: clamp(0.75rem, 3.7vw, 0.9375rem);
+  }
+
   /* ---- Menú flotante estilo glass: una isla con esquinas curvadas que
          sólo abarca al menú y deja ver el Hero (a tope arriba) por detrás ---- */
   .site-nav {
