@@ -64,6 +64,30 @@ const jsonLd = {
     <meta name="generator" content={Astro.generator} />
 
     <!--
+      Capa de movimiento: `motion-ok` solo con movimiento permitido y JavaScript
+      activo. Todo el CSS que oculta elementos a la espera de animarlos cuelga de
+      esa clase. Salvavidas: si a los 3 s el módulo no marcó `motion-ready`, se
+      retira `motion-ok` (y se pone `motion-off`) y el contenido queda visible.
+    -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+        root.classList.add('motion-ok');
+        // Llegada con transición entre páginas: la isla del menú no repite su caída.
+        window.addEventListener('pagereveal', function (e) {
+          if (e.viewTransition) root.classList.add('nav-settled');
+        });
+        setTimeout(function () {
+          if (!root.classList.contains('motion-ready')) {
+            root.classList.remove('motion-ok');
+            root.classList.add('motion-off');
+          }
+        }, 3000);
+      })();
+    </script>
+
+    <!--
       Google Consent Mode v2: por defecto TODO denegado. El banner de cookies
       (CookieConsent.astro) hace `consent update` a "granted" sólo si el usuario
       acepta. Así cualquier GA/Ads que se agregue a futuro respeta el
@@ -142,5 +166,8 @@ const jsonLd = {
     <slot />
     <CookieConsent />
     <WhatsAppWidget />
+    <script>
+      import '../scripts/motion/index';
+    </script>
   </body>
 </html>

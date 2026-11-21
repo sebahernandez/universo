@@ -1,0 +1,11 @@
+---
+// Tramo destacado de un título. src/scripts/motion/marker.ts dibuja debajo un
+// trazo de marcador SVG por cada línea que ocupe el tramo (puede partirse en
+// móvil). Sin JavaScript no hay trazo; es solo decoración.
+interface Props {
+  class?: string;
+}
+const { class: cls = 'text-rosa-fuerte' } = Astro.props;
+---
+
+<span class:list={['resaltado', cls]} data-resaltado><slot /></span>

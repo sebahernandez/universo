@@ -28,7 +28,7 @@ const accents = [
   >
   </div>
   <nav
-    class="site-nav mx-auto flex max-w-sitio items-center justify-between gap-4 rounded-[1.75rem] px-5 py-2.5 md:px-6 md:py-3"
+    class="site-nav relative mx-auto flex max-w-sitio items-center justify-between gap-2 rounded-[1.75rem] px-3.5 py-2.5 min-[400px]:gap-4 min-[400px]:px-5 md:px-6 md:py-3"
     aria-label="Navegación principal"
   >
     <a href="/#inicio" aria-label="Universo Crafter — inicio" class="shrink-0">
@@ -38,18 +38,20 @@ const accents = [
         width="396"
         height="188"
         alt="Universo Crafter"
-        class="h-12 w-auto md:h-14"
+        class="h-10 w-auto min-[360px]:h-12 md:h-14"
         loading="eager"
       />
     </a>
 
-    <ul class="hidden items-center gap-7 lg:flex">
+    <ul class="nav-list hidden items-center gap-7 lg:flex">
+      <!-- Marcador de sección activa (decoración): lo mueve nav-marker.ts. -->
+      <li class="nav-marker" aria-hidden="true"></li>
       {
         navLinks.map((link) => (
           <li>
             <a
               href={link.href}
-              class="nav-link relative text-sm font-bold tracking-wide text-tinta uppercase transition-colors hover:text-rosa-fuerte"
+              class="nav-link relative text-sm font-bold tracking-wide text-tinta uppercase transition-colors hover:text-tinta"
             >
               {link.label}
             </a>
@@ -58,33 +60,34 @@ const accents = [
       }
     </ul>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1.5 min-[400px]:gap-2">
       <a
         href={whatsappLink}
         target="_blank"
         rel="noopener"
+        data-confetti
         aria-label="Escríbenos por WhatsApp"
-        class="social-chip hover:text-menta-fuerte"
+        class="social-chip [--chip:var(--color-menta-fuerte)]"
       >
-        <SocialIcon name="whatsapp" class="h-[1.05rem] w-[1.05rem]" />
+        <SocialIcon name="whatsapp" class="h-5 w-5" />
       </a>
       <a
         href={site.instagram}
         target="_blank"
         rel="noopener"
         aria-label="Síguenos en Instagram"
-        class="social-chip hover:text-rosa-fuerte"
+        class="social-chip [--chip:var(--color-rosa-fuerte)]"
       >
-        <SocialIcon name="instagram" class="h-[1.05rem] w-[1.05rem]" />
+        <SocialIcon name="instagram" class="h-5 w-5" />
       </a>
       <a
         href={site.facebook}
         target="_blank"
         rel="noopener"
         aria-label="Síguenos en Facebook"
-        class="social-chip hover:text-celeste-fuerte"
+        class="social-chip [--chip:var(--color-celeste-fuerte)]"
       >
-        <SocialIcon name="facebook" class="h-[1.05rem] w-[1.05rem]" />
+        <SocialIcon name="facebook" class="h-5 w-5" />
       </a>
 
       <button
@@ -93,7 +96,7 @@ const accents = [
         aria-label="Abrir menú"
         aria-expanded="false"
         aria-controls="mobile-menu"
-        class="menu-toggle ml-1 grid h-11 w-11 cursor-pointer place-items-center rounded-full bg-white/70 text-tinta shadow-suave backdrop-blur-sm transition-colors hover:bg-white lg:hidden"
+        class="menu-toggle grid min-[400px]:ml-1 h-11 w-11 cursor-pointer place-items-center rounded-full bg-white/70 text-tinta shadow-suave backdrop-blur-sm transition-colors hover:bg-white lg:hidden"
       >
         <span class="menu-icon" aria-hidden="true">
           <span class="menu-bar"></span>
@@ -102,6 +105,8 @@ const accents = [
         </span>
       </button>
     </div>
+    <!-- Guirnalda de banderines (decoración): la dibuja src/scripts/motion/garland.ts. -->
+    <span class="garland" data-garland aria-hidden="true"></span>
   </nav>
 
   <!-- Menú móvil flotante (no desplaza el contenido) -->
@@ -154,24 +159,40 @@ const accents = [
         </ul>
 
         <!-- CTA WhatsApp + redes -->
-        <div class="menu-item mt-4 flex items-center gap-3" style={`--i:${navLinks.length}`}>
+        <div class="menu-item mt-4" style={`--i:${navLinks.length}`}>
           <a
             href={whatsappLink}
             target="_blank"
             rel="noopener"
-            class="menu-wa flex min-h-13 min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-oscuro px-3 py-3.5 font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
+            data-confetti
+            class="menu-wa flex min-h-13 items-center justify-center gap-2 whitespace-nowrap rounded-2xl bg-oscuro px-3 py-3.5 font-semibold text-white transition-transform duration-200 hover:-translate-y-0.5"
           >
             <SocialIcon name="whatsapp" />
             Escríbenos por WhatsApp
           </a>
+        </div>
+        <div class="menu-item mt-2.5 grid gap-2.5" style={`--i:${navLinks.length + 1}`}>
           <a
             href={site.instagram}
             target="_blank"
             rel="noopener"
-            aria-label="Síguenos en Instagram"
-            class="grid h-13 w-13 shrink-0 place-items-center rounded-2xl bg-white/70 text-tinta-suave shadow-suave transition-colors hover:text-rosa-fuerte"
+            aria-label={`Instagram: ${site.instagramHandle}`}
+            class="menu-social hover:text-rosa-fuerte"
           >
-            <SocialIcon name="instagram" />
+            <SocialIcon name="instagram" class="h-5 w-5 shrink-0" />
+            <span>Instagram</span>
+            <span class="ml-auto min-w-0 truncate font-medium text-tinta-suave">{site.instagramHandle}</span>
+          </a>
+          <a
+            href={site.facebook}
+            target="_blank"
+            rel="noopener"
+            aria-label={`Facebook: ${site.facebookHandle}`}
+            class="menu-social hover:text-celeste-fuerte"
+          >
+            <SocialIcon name="facebook" class="h-5 w-5 shrink-0" />
+            <span>Facebook</span>
+            <span class="ml-auto min-w-0 truncate font-medium text-tinta-suave">{site.facebookHandle}</span>
           </a>
         </div>
       </div>
@@ -183,6 +204,27 @@ const accents = [
   /* CTA de WhatsApp del menú móvil: texto fluido para que quepa en una línea. */
   .menu-wa {
     font-size: clamp(0.75rem, 3.7vw, 0.9375rem);
+  }
+
+  /* Redes con su nombre dentro del menú móvil. */
+  .menu-social {
+    display: flex;
+    min-height: 3.25rem;
+    min-width: 0;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: 1rem;
+    background: rgb(255 255 255 / 0.7);
+    padding: 0.75rem 1rem;
+    font-size: clamp(0.75rem, 3.4vw, 0.875rem);
+    font-weight: 600;
+    color: var(--color-tinta);
+    box-shadow: var(--shadow-suave);
+    transition: color 0.2s ease;
+  }
+  .menu-social:focus-visible {
+    outline: 2px solid var(--color-rosa-fuerte);
+    outline-offset: 2px;
   }
 
   /* ---- Menú flotante estilo glass: una isla con esquinas curvadas que
@@ -229,29 +271,34 @@ const accents = [
   /* ---- Chips de redes sociales: círculos de vidrio que combinan con la isla,
          con color de marca y leve elevación al pasar el cursor ---- */
   .social-chip {
-    display: none;
+    display: inline-grid;
+    place-items: center;
+    height: 2.25rem;
+    width: 2.25rem;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    /* Solid brand-pastel disc with an ink glyph: whole-pixel 20px icon, >7:1 contrast. */
+    background: var(--chip);
+    color: var(--color-tinta);
+    box-shadow: inset 0 0 0 1px rgb(43 36 54 / 0.08);
+    transition:
+      box-shadow 0.25s ease,
+      transform 0.25s ease;
   }
-  @media (min-width: 640px) {
-    .social-chip {
-      display: inline-grid;
-      place-items: center;
-      height: 2.25rem;
-      width: 2.25rem;
-      border-radius: 9999px;
-      border: 1px solid currentColor;
-      color: var(--color-lila-fuerte);
-      transition:
-        color 0.25s ease,
-        border-color 0.25s ease,
-        transform 0.25s ease;
-    }
+  @media (hover: hover) {
     .social-chip:hover {
       transform: translateY(-2px);
+      box-shadow:
+        inset 0 0 0 1px rgb(43 36 54 / 0.08),
+        0 6px 14px -6px rgb(43 36 54 / 0.45);
     }
-    .social-chip:focus-visible {
-      outline: 2px solid var(--color-rosa-fuerte);
-      outline-offset: 2px;
-    }
+  }
+  .social-chip:active {
+    transform: scale(0.92);
+  }
+  .social-chip:focus-visible {
+    outline: 2px solid var(--color-rosa-fuerte);
+    outline-offset: 2px;
   }
 
   /* ---- Botón hamburguesa que se transforma en X ---- */

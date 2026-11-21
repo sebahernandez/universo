@@ -1,5 +1,6 @@
 ---
 import { pasosCompra } from '../data/pasosCompra';
+import Resaltado from './Resaltado.astro';
 
 const iconPaths: Record<string, string> = {
   sparkles: 'M12 4l1.5 4L18 9.5 13.5 11 12 15l-1.5-4L6 9.5 10.5 8 12 4Z',
@@ -22,23 +23,33 @@ const accent: Record<string, string> = {
   <!-- Ancla equivalente para el enlace "Envíos" del Footer (no se modifica el Footer). -->
   <span id="compras-envios" class="block"></span>
   <div class="mx-auto max-w-sitio px-5 py-14 md:px-8 md:py-20">
-    <h2 class="text-center font-display text-4xl leading-[1.1] text-tinta sm:text-5xl">
-      ¿Cómo <span class="text-rosa-fuerte">comprar</span>?
+    <h2 data-motion="pegar" class="text-center font-titulo font-semibold tracking-tight text-4xl leading-[1.1] text-tinta sm:text-5xl">
+      ¿Cómo <Resaltado>comprar</Resaltado>?
     </h2>
     <p class="mt-2 text-center text-base text-tinta-suave">Es muy fácil y rápido.</p>
 
-    <div class="mt-10 grid gap-4 md:grid-cols-3 md:gap-6">
+    <div class="relative mt-10 grid gap-4 md:grid-cols-3 md:gap-6" data-motion-group>
+      <!-- Línea de corte y tijera (decoración). Sin movimiento se ve completa y estática. -->
+      <span class="corte-linea" data-corte-linea aria-hidden="true"></span>
+      <span class="corte-tijera" data-corte-tijera aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="5" cy="7" r="3" />
+          <circle cx="5" cy="17" r="3" />
+          <path d="M7.5 8.5 21 17M7.5 15.5 21 7" />
+        </svg>
+      </span>
       {
         pasosCompra.map((p) => (
-          <article class={`relative rounded-panel ${cardBg[p.color]} p-6`}>
+          <article data-motion="pegar" class={`relative rounded-panel ${cardBg[p.color]} p-6`}>
             <div class="flex items-start justify-between gap-4">
-              <span class={`font-display text-3xl leading-none whitespace-nowrap ${accent[p.color]}`}>{p.num}</span>
+              <span class={`font-titulo font-semibold tracking-tight text-3xl leading-none whitespace-nowrap ${accent[p.color]}`}>{p.num}</span>
               {p.img ? (
                 <img
                   src={p.img}
                   alt=""
                   loading="lazy"
                   decoding="async"
+                  data-parallax="10"
                   class="pointer-events-none absolute -right-3 -top-5 h-24 w-24 object-contain md:-right-4 md:-top-6 md:h-28 md:w-28"
                 />
               ) : (
@@ -66,3 +77,72 @@ const accent: Record<string, string> = {
     </div>
   </div>
 </section>
+
+<style>
+  /* Columna (móvil): línea a la izquierda de los pasos. Valores de reposo; cut-line.ts
+     afina top/height con la posición real de los pasos. */
+  .corte-linea,
+  .corte-tijera {
+    position: absolute;
+    pointer-events: none;
+  }
+  .corte-linea {
+    left: -0.75rem;
+    top: 2rem;
+    bottom: 2rem;
+    border-left: 3px dotted rgb(107 100 120 / 0.55);
+  }
+  .corte-tijera {
+    left: -0.75rem;
+    top: calc(100% - 2rem);
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: -0.875rem 0 0 -0.875rem;
+    color: var(--color-tinta);
+  }
+  .corte-tijera svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(90deg);
+  }
+
+  /* Fila (desde md, donde la cuadrícula pasa a tres columnas): línea sobre las tarjetas,
+     de centro a centro del primer y el último paso (1/6 y 5/6 del ancho). */
+  @media (min-width: 48rem) {
+    .corte-linea {
+      left: calc(100% / 6);
+      right: calc(100% / 6);
+      top: -1.25rem;
+      bottom: auto;
+      border-left: 0;
+      border-top: 3px dotted rgb(107 100 120 / 0.55);
+    }
+    .corte-tijera {
+      left: calc(100% * 5 / 6);
+      top: -1.25rem;
+      margin: -0.875rem 0 0 -0.875rem;
+    }
+    .corte-tijera svg {
+      transform: none;
+    }
+  }
+
+  /* Con movimiento la tijera parte del inicio y cut-line.ts la desplaza. */
+  :global(.motion-ok) .corte-linea {
+    clip-path: inset(0 100% 0 0);
+  }
+  :global(.motion-ok) .corte-tijera {
+    top: 2rem;
+  }
+  @media (max-width: 47.999rem) {
+    :global(.motion-ok) .corte-linea {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+  @media (min-width: 48rem) {
+    :global(.motion-ok) .corte-tijera {
+      left: calc(100% / 6);
+      top: -1.25rem;
+    }
+  }
+</style>

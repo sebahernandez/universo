@@ -1,5 +1,6 @@
 ---
 import { beneficios } from '../data/beneficios';
+import Resaltado from './Resaltado.astro';
 
 // Íconos de línea (outline) por clave. Se usa stroke=currentColor.
 const iconPaths: Record<string, string> = {
@@ -25,14 +26,14 @@ const iconFg: Record<string, string> = {
 
 <section class="section-blend [--sec-from:var(--color-lila-claro)] [--sec-to:var(--color-blanco-lila)]">
   <div class="mx-auto max-w-sitio px-5 py-14 md:px-8 md:py-20">
-    <h2 class="text-center font-display text-4xl leading-[1.1] text-tinta sm:text-5xl">
-      ¿Por qué elegir <span class="text-rosa-fuerte">Universo Crafter</span>?
+    <h2 data-motion="pegar" class="text-center font-titulo font-semibold tracking-tight text-4xl leading-[1.1] text-tinta sm:text-5xl">
+      ¿Por qué elegir <Resaltado>Universo Crafter</Resaltado>?
     </h2>
 
-    <div class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+    <div class="mt-10 grid grid-cols-2 gap-4 [perspective:1000px] sm:gap-6 lg:grid-cols-4" data-motion-group>
       {
         beneficios.map((b) => (
-          <article class="rounded-tarjeta border border-tinta/10 bg-white px-4 py-6 text-center shadow-suave sm:px-6">
+          <article data-motion="pegar" data-tilt class="rounded-tarjeta border border-tinta/10 bg-white px-4 py-6 text-center shadow-suave sm:px-6">
             {b.image ? (
               <img
                 src={b.image}
@@ -68,6 +69,7 @@ const iconFg: Record<string, string> = {
     <div class="mt-10 text-center">
       <a
         href="/#nosotros"
+        data-magnetic
         class="inline-block rounded-full bg-oscuro px-8 py-4 text-sm font-semibold text-white shadow-suave transition-transform hover:-translate-y-0.5"
       >
         Conoce más sobre nosotros

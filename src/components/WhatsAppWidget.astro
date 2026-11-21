@@ -42,6 +42,7 @@ import { site, whatsappLink } from '../data/site';
         href={whatsappLink}
         target="_blank"
         rel="noopener"
+        data-confetti
         class="group flex cursor-pointer items-center gap-3 rounded-2xl bg-oscuro px-4 py-3.5 text-white transition-transform hover:-translate-y-0.5"
       >
         <span
@@ -105,6 +106,49 @@ import { site, whatsappLink } from '../data/site';
     transform: translateY(0) scale(1);
   }
 
+  /* Saludo único del botón (ver script): meneo breve + onda, 1.2 s, una sola vez. */
+  .wa-fab {
+    position: relative;
+  }
+  .wa-fab.wa-saludo {
+    animation: wa-saludo 1.2s var(--ease-papel) 1;
+  }
+  .wa-fab.wa-saludo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    box-shadow: 0 0 0 0 rgb(185 167 240 / 0.7);
+    animation: wa-onda 1.2s ease-out 1;
+    pointer-events: none;
+  }
+  @keyframes wa-saludo {
+    0%,
+    100% {
+      transform: rotate(0) scale(1);
+    }
+    15% {
+      transform: rotate(-14deg) scale(1.12);
+    }
+    30% {
+      transform: rotate(12deg) scale(1.12);
+    }
+    45% {
+      transform: rotate(-9deg) scale(1.08);
+    }
+    60% {
+      transform: rotate(6deg) scale(1.04);
+    }
+    75% {
+      transform: rotate(-3deg) scale(1.02);
+    }
+  }
+  @keyframes wa-onda {
+    to {
+      box-shadow: 0 0 0 16px rgb(185 167 240 / 0);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .wa-panel,
     .wa-fab,
@@ -122,8 +166,27 @@ import { site, whatsappLink } from '../data/site';
   const iconOpen = widget?.querySelector<HTMLElement>('.wa-icon-open');
   const iconClose = widget?.querySelector<HTMLElement>('.wa-icon-close');
 
+  // Greeting state lives in sessionStorage: once per session, never after the panel was opened.
+  const GREETED_KEY = 'uc:wa-saludo';
+  const OPENED_KEY = 'uc:wa-abierto';
+  const flag = (key: string) => {
+    try {
+      return sessionStorage.getItem(key) === '1';
+    } catch {
+      return false;
+    }
+  };
+  const mark = (key: string) => {
+    try {
+      sessionStorage.setItem(key, '1');
+    } catch {
+      /* sessionStorage unavailable: the greeting just may repeat on another page */
+    }
+  };
+
   function setOpen(open: boolean) {
     if (!widget || !toggle || !panel) return;
+    if (open) mark(OPENED_KEY);
     widget.dataset.open = String(open);
     toggle.setAttribute('aria-expanded', String(open));
     toggle.setAttribute('aria-label', open ? 'Cerrar chat de WhatsApp' : 'Abrir chat de WhatsApp');
@@ -150,4 +213,21 @@ import { site, whatsappLink } from '../data/site';
       setOpen(false);
     }
   });
+
+  // Greeting: after 8 s on the page, once per session, skipped if the panel was ever opened.
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function greet() {
+    if (!toggle || !widget || reducedMotion.matches || flag(GREETED_KEY) || flag(OPENED_KEY)) return;
+    if (widget.dataset.open === 'true') return;
+    if (document.hidden) {
+      document.addEventListener('visibilitychange', greet, { once: true });
+      return;
+    }
+    mark(GREETED_KEY);
+    toggle.classList.add('wa-saludo');
+    toggle.addEventListener('animationend', (e) => {
+      if (e.target === toggle) toggle.classList.remove('wa-saludo');
+    }, { once: true });
+  }
+  if (!flag(GREETED_KEY) && !flag(OPENED_KEY)) window.setTimeout(greet, 8000);
 </script>

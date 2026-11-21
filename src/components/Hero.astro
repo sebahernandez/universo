@@ -17,6 +17,7 @@ const heroBgMobile = cld(
 <section id="inicio" class="relative overflow-hidden">
   <!-- Fondo móvil (vertical): solo hasta md. -->
   <div
+    data-hero-bg
     class="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat md:hidden"
     style={`background-image:url('${heroBgMobile}')`}
     aria-hidden="true"
@@ -24,6 +25,7 @@ const heroBgMobile = cld(
   </div>
   <!-- Fondo escritorio/tablet (horizontal): desde md. -->
   <div
+    data-hero-bg
     class="absolute inset-0 z-0 hidden bg-cover bg-center bg-no-repeat md:block"
     style={`background-image:url('${heroBgDesktop}')`}
     aria-hidden="true"
@@ -38,21 +40,43 @@ const heroBgMobile = cld(
   >
   </div>
 
+  <!-- Papeles decorativos en tres capas (profundidad). Solo decoración: sin foco, sin clics, ocultos a lectores. -->
+  <div class="pointer-events-none absolute inset-0 z-[1]" aria-hidden="true" data-hero-papeles>
+    <div class="absolute inset-0" data-papel-layer="1">
+      <span data-papel class="absolute top-[24%] -left-3 h-6 w-6 rotate-12 rounded-md bg-rosa-fuerte/80 lg:left-[4%] lg:h-8 lg:w-8"></span>
+      <span data-papel class="absolute top-[34%] -right-2 h-5 w-5 rounded-full bg-celeste-fuerte/80 lg:right-[6%] lg:h-7 lg:w-7"></span>
+    </div>
+    <div class="absolute inset-0" data-papel-layer="2">
+      <span data-papel class="absolute hidden md:block top-[58%] -left-2 h-7 w-7 bg-amarillo-fuerte/85 [clip-path:polygon(50%_0,100%_100%,0_100%)] lg:left-[11%] lg:h-9 lg:w-9"></span>
+      <svg data-papel class="absolute top-[16%] right-0 h-8 w-8 text-lila-fuerte/85 lg:right-[13%] lg:h-11 lg:w-11" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 18.9 6.1 20.3l1.3-6.5L2.5 9.3l6.6-.8L12 2.5z" />
+      </svg>
+      <span data-papel class="absolute hidden md:block top-[62%] -right-1 h-3 w-10 -rotate-45 rounded-full bg-menta-fuerte/85 lg:right-[10%] lg:h-3.5 lg:w-14"></span>
+    </div>
+    <div class="absolute inset-0" data-papel-layer="3">
+      <span data-papel class="absolute hidden md:block top-[76%] -left-4 h-10 w-10 rounded-full bg-durazno-fuerte/80 lg:left-[2%] lg:h-14 lg:w-14"></span>
+      <span data-papel class="absolute top-[80%] -right-4 h-9 w-9 -rotate-12 rounded-lg bg-rosa-fuerte/75 lg:right-[3%] lg:h-12 lg:w-12"></span>
+      <svg data-papel class="absolute top-[10%] left-[20%] hidden h-8 w-20 text-menta-fuerte lg:block" viewBox="0 0 80 32" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+        <path d="M4 22c8-14 14-14 18-4s10 10 18-2 14-12 18-2 10 8 16 0" />
+      </svg>
+    </div>
+  </div>
+
   <div id="inicio-main" class="relative z-10">
     <div class="mx-auto flex min-h-[30rem] max-w-sitio flex-col items-center justify-center px-5 pt-28 pb-10 text-center sm:min-h-[34rem] md:min-h-140 md:px-8 md:pt-32 md:pb-20 lg:min-h-170">
       <div class="min-w-0">
         <!-- Badge de categoría -->
-        <span class="inline-block rounded-full bg-rosa px-4 py-1.5 text-xs font-bold tracking-[0.18em] text-rosa-fuerte uppercase">
+        <span class="hero-in inline-block rounded-full bg-rosa px-4 py-1.5 text-xs font-bold tracking-[0.18em] text-rosa-fuerte uppercase" style="--d:0ms">
           Papelería Creativa
         </span>
 
         <h1 class="mt-5 font-display text-5xl leading-[1.08] text-black sm:text-6xl lg:text-7xl xl:text-8xl">
-          <span class="block">Ideas que</span>
-          <span class="block">hacen tu mundo</span>
-          <span class="block">más lindo</span>
+          <span class="hero-in block" style="--d:100ms">Ideas que</span>
+          <span class="hero-in block" style="--d:200ms">hacen tu mundo</span>
+          <span class="hero-in block" style="--d:300ms">más lindo</span>
         </h1>
 
-        <p class="mx-auto mt-6 max-w-md text-base leading-relaxed text-black sm:text-lg">
+        <p style="--d:450ms" class="hero-in mx-auto mt-6 max-w-md text-base leading-relaxed text-black sm:text-lg">
           Papelería, stickers y productos creativos para regalar, decorar y
           organizar tu día a día.
         </p>
@@ -60,13 +84,17 @@ const heroBgMobile = cld(
         <div class="mt-8 flex flex-nowrap justify-center gap-3 sm:gap-4">
           <a
             href="/#productos"
-            class="flex-1 rounded-full bg-oscuro px-5 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-white shadow-suave transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
+            style="--d:600ms"
+            data-magnetic
+            class="hero-in flex-1 rounded-full bg-oscuro px-5 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-white shadow-suave transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
           >
             Ver productos
           </a>
           <a
             href="/#nosotros"
-            class="flex-1 rounded-full border border-oscuro/80 bg-white/70 px-5 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-black transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
+            style="--d:700ms"
+            data-magnetic
+            class="hero-in flex-1 rounded-full border border-oscuro/80 bg-white/70 px-5 py-3.5 text-center text-sm font-semibold whitespace-nowrap text-black transition-transform hover:-translate-y-0.5 sm:flex-initial sm:px-7"
           >
             Conócenos
           </a>
@@ -88,3 +116,22 @@ const heroBgMobile = cld(
     <TextLoop client:load text="Pequeños detalles, grandes historias" />
   </div>
 </section>
+
+<style>
+  /* Entrada del Hero en CSS puro: arranca en el primer pintado sin esperar al módulo de movimiento.
+     `backwards` (no `forwards`) para no fijar transform/opacity después y dejar libre a GSAP y al hover. */
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem) rotate(-2deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  :global(.motion-ok) .hero-in {
+    animation: hero-in 650ms var(--ease-papel) backwards;
+    animation-delay: var(--d, 0ms);
+  }
+</style>

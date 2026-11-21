@@ -3,21 +3,22 @@
 // datos (src/data/faq.ts) que /preguntas-frecuentes y el JSON-LD. Se muestra un
 // subconjunto; la lista completa vive en /preguntas-frecuentes.
 import { faq } from '../data/faq';
+import Resaltado from './Resaltado.astro';
 
 const preguntas = faq.slice(0, 6);
 ---
 
 <section class="section-blend [--sec-from:var(--color-celeste)] [--sec-to:#fdf0f5]">
   <div class="mx-auto max-w-3xl px-5 py-14 md:px-8 md:py-20">
-    <h2 class="text-center font-display text-4xl leading-[1.1] text-tinta sm:text-5xl">
-      Preguntas <span class="text-rosa-fuerte">Frecuentes</span>
+    <h2 data-motion="pegar" class="text-center font-titulo font-semibold tracking-tight text-4xl leading-[1.1] text-tinta sm:text-5xl">
+      Preguntas <Resaltado>Frecuentes</Resaltado>
     </h2>
     <p class="mt-2 text-center text-base text-tinta-suave">Resolvemos las dudas más comunes.</p>
 
-    <div class="mt-8 space-y-3">
+    <div class="mt-8 space-y-3" data-motion-group>
       {
         preguntas.map((item) => (
-          <details class="faq-item group rounded-tarjeta bg-white/85 shadow-suave">
+          <details data-motion="lateral" class="faq-item group rounded-tarjeta bg-white/85 shadow-suave">
             <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-tinta">
               <span>{item.pregunta}</span>
               <svg

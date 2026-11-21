@@ -14,6 +14,23 @@ const REDIRECT_SECONDS = 6;
   robots="noindex, nofollow, noarchive"
 >
   <!--
+    Espejo de solo lectura de la guarda (misma clave y misma regla de 5 minutos),
+    evaluado ANTES de que la guarda consuma la bandera. Solo lo usa la
+    celebración de confeti, para no lanzarla si la guarda va a redirigir.
+  -->
+  <script is:inline>
+    window.__ucGraciasOk = (function () {
+      try {
+        var sello = sessionStorage.getItem('uc:form-enviado');
+        var ts = parseInt(sello, 10);
+        return !!sello && !isNaN(ts) && Date.now() - ts < 5 * 60 * 1000;
+      } catch (e) {
+        return false;
+      }
+    })();
+  </script>
+
+  <!--
     Guarda de acceso: /gracias solo es válida si se llega tras enviar
     el formulario. La bandera se pone en Contacto.astro al hacer submit.
     Se ejecuta ANTES de renderizar el contenido para evitar parpadeo.
@@ -50,7 +67,7 @@ const REDIRECT_SECONDS = 6;
         class="mx-auto w-40 object-contain drop-shadow-[0_16px_24px_rgb(43_36_54/0.18)] md:w-52"
       />
 
-      <h1 class="mt-6 font-display text-6xl leading-[0.95] sm:text-7xl">
+      <h1 class="mt-6 font-titulo font-semibold tracking-tight text-6xl leading-[0.95] sm:text-7xl">
         <GradientText colors={GRAD_WARM} direction={GRAD_DIRECTION}>¡Gracias por</GradientText>{' '}<GradientText colors={GRAD_COOL} direction={GRAD_DIRECTION}>escribirnos!</GradientText>
       </h1>
 
@@ -74,6 +91,13 @@ const REDIRECT_SECONDS = 6;
     </div>
   </main>
 </Layout>
+
+<script>
+  import { celebrate } from '../scripts/motion/confetti';
+
+  // Celebración única, solo si la guarda de arriba dejó pasar la visita.
+  if ((window as unknown as { __ucGraciasOk?: boolean }).__ucGraciasOk) celebrate();
+</script>
 
 <script define:vars={{ REDIRECT_SECONDS }}>
   (() => {

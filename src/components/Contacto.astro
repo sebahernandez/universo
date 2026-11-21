@@ -1,5 +1,6 @@
 ---
 import { site, whatsappLink } from '../data/site';
+import Resaltado from './Resaltado.astro';
 
 // URL absoluta a la página de gracias (Web3Forms exige URL completa).
 const graciasUrl = new URL('/gracias', Astro.url).href;
@@ -34,21 +35,23 @@ const contactos = [
     <div class="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
       <!-- Columna izquierda: título + copy + tarjetas de contacto -->
       <div>
-        <h2 class="font-display text-5xl leading-[1.05] text-tinta sm:text-6xl lg:text-7xl">
+        <h2 data-motion="pegar" data-motion-rotate="-2" class="font-titulo font-semibold tracking-tight text-5xl leading-[1.05] text-tinta sm:text-6xl lg:text-7xl">
           Cuéntanos que
           <br />
-          <span class="text-rosa-fuerte">tienes en mente</span>
+          <Resaltado>tienes en mente</Resaltado>
         </h2>
 
-        <p class="mt-6 max-w-md text-lg leading-relaxed text-tinta-suave">
+        <p data-motion="fundido" class="mt-6 max-w-md text-lg leading-relaxed text-tinta-suave">
           Si tienes una idea, proyecto o cotización en mente, escríbenos y conversemos.
           Estaremos felices de ayudarte a llevarlo al papel.
         </p>
 
-        <div class="mt-9 space-y-4">
+        <div class="mt-9 space-y-4" data-motion-group>
           {
             contactos.map((c) => (
               <a
+                data-motion="subir"
+                data-confetti={c.icon === 'whatsapp' ? '' : undefined}
                 href={c.href}
                 target="_blank"
                 rel="noopener"
@@ -101,18 +104,19 @@ const contactos = [
       </div>
 
       <!-- Columna derecha: formulario (Web3Forms) -->
-      <div class="relative rounded-panel bg-[linear-gradient(140deg,#fde3ef_0%,#f6ecfa_45%,#e9e2fb_100%)] p-6 pt-10 shadow-tarjeta md:p-9 md:pt-12">
+      <div data-motion="pegar" data-motion-rotate="1.5" class="relative rounded-panel bg-[linear-gradient(140deg,#fde3ef_0%,#f6ecfa_45%,#e9e2fb_100%)] p-6 pt-10 shadow-tarjeta md:p-9 md:pt-12">
         <!-- Sobre decorativo -->
         <img
           src="https://res.cloudinary.com/v5ovpy2d/image/upload/v1789695381/escribenos.png"
           alt=""
           aria-hidden="true"
+          data-sobre
           loading="lazy"
           decoding="async"
           class="pointer-events-none absolute right-2 -top-10 h-24 w-auto drop-shadow-md sm:right-3 sm:h-28 md:-right-6 md:-top-16 md:h-40"
         />
 
-        <h3 class="font-display text-4xl text-tinta">
+        <h3 class="font-titulo font-semibold tracking-tight text-4xl text-tinta">
           Escríbenos
         </h3>
         <p class="mt-2 max-w-sm text-sm leading-relaxed text-tinta-suave">
@@ -167,6 +171,7 @@ const contactos = [
 
           <button
             type="submit"
+            data-magnetic
             class="flex w-full items-center justify-center gap-2 rounded-2xl bg-oscuro px-6 py-4 text-center text-base font-semibold text-white transition-transform hover:-translate-y-0.5"
           >
             Enviar mensaje
@@ -179,6 +184,45 @@ const contactos = [
     </div>
   </div>
 </section>
+
+<style>
+  /* Respuesta visual al foco en campos y etiquetas (solo presentación; el formulario no cambia). */
+  #contacto form input:not([type='hidden']):not([type='checkbox']),
+  #contacto form textarea {
+    transition:
+      box-shadow var(--dur-micro) ease,
+      transform var(--dur-micro) ease;
+  }
+  #contacto form input:not([type='hidden']):not([type='checkbox']):focus,
+  #contacto form textarea:focus {
+    box-shadow:
+      0 0 0 4px rgb(185 167 240 / 0.4),
+      0 10px 24px -12px rgb(43 36 54 / 0.25);
+    transform: translateY(-1px);
+  }
+  #contacto form > div > label {
+    transition:
+      color var(--dur-micro) ease,
+      transform var(--dur-micro) ease;
+  }
+  /* #6b4fc4 sobre el panel rosa/lila: 4.9:1 o más. */
+  #contacto form > div:focus-within > label {
+    color: #6b4fc4;
+    transform: translateX(3px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #contacto form input,
+    #contacto form textarea,
+    #contacto form > div > label {
+      transition: none;
+    }
+    #contacto form input:focus,
+    #contacto form textarea:focus,
+    #contacto form > div:focus-within > label {
+      transform: none;
+    }
+  }
+</style>
 
 <!-- Carga el widget de Cloudflare Turnstile (verificación anti-bot del formulario) -->
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer is:inline></script>

@@ -15,6 +15,15 @@
   font-display: swap;
 }
 
+/* Títulos de sección — Fredoka (variable 300–700, subconjunto latin) */
+@font-face {
+  font-family: 'Crafter Titulo';
+  src: url('/fonts/fredoka-var.woff2') format('woff2');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Sans humanista para cuerpo/subtítulos/tarjetas — Nunito Sans (variable 400–700) */
 @font-face {
   font-family: 'Crafter Sans';
@@ -30,6 +39,7 @@
 @theme {
   /* Tipografías */
   --font-display: 'Crafter Display', 'Comic Sans MS', 'Segoe Print', cursive;
+  --font-titulo: 'Crafter Titulo', 'Crafter Sans', ui-rounded, system-ui, sans-serif;
   --font-sans: 'Crafter Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* Paleta pastel */
@@ -72,12 +82,25 @@
   --shadow-tarjeta: 0 20px 45px -20px rgb(43 36 54 / 0.2);
 }
 
+/* Tokens de movimiento («Papel vivo»). `static` para que se emitan aunque
+   solo los consuma CSS de componentes o JavaScript. Equivalentes GSAP en
+   src/scripts/motion/core.ts. */
+@theme static {
+  --ease-papel: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-pegar: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-micro: 200ms;
+  --dur-entrada: 700ms;
+  --stagger: 80ms;
+}
+
 /* ============================================================
    Base
    ============================================================ */
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 8rem; /* compensa el menú flotante al saltar por anclas */
+  /* `clip` y no `hidden`: no crea contenedor de scroll, así que no rompe sticky ni las anclas. */
+  overflow-x: clip;
 }
 
 body {
@@ -165,6 +188,209 @@ body {
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* ============================================================
+   Estados iniciales de los gestos de movimiento
+   Solo existen bajo `.motion-ok` (la pone un script del <head> con movimiento
+   permitido y se retira a los 3 s si el módulo no llegó a marcar
+   `motion-ready`). Sin JavaScript o con movimiento reducido no hay nada oculto.
+   reveal.ts anima cada elemento una vez y le pone `data-motion-done`.
+   Los selectores nombran los cuatro gestos: TextLoop ya usa data-motion
+   ("playing" | "paused") y no debe ocultarse.
+   ============================================================ */
+.motion-ok [data-motion='pegar']:not([data-motion-done]),
+.motion-ok [data-motion='subir']:not([data-motion-done]),
+.motion-ok [data-motion='lateral']:not([data-motion-done]),
+.motion-ok [data-motion='fundido']:not([data-motion-done]) {
+  opacity: 0;
+}
+.motion-ok [data-motion='pegar']:not([data-motion-done]) {
+  transform: translateY(1.75rem) rotate(-3deg) scale(0.94);
+}
+.motion-ok [data-motion='subir']:not([data-motion-done]) {
+  transform: translateY(2rem);
+}
+.motion-ok [data-motion='lateral']:not([data-motion-done]) {
+  transform: translateX(-1.75rem);
+}
+
+/* Los botones magnéticos y las tarjetas inclinadas mueven `transform` con GSAP: una transición CSS sobre transform lo retrasaría. */
+[data-magnetic],
+[data-tilt] {
+  transition-property: translate, box-shadow, background-color, color;
+}
+
+/* Inclinación (--rx/--ry) y tirón magnético (--mx/--my) los escribe tilt.ts. Se aplican como
+   `transform` solo mientras dura el gesto, para no dejar un transform permanente en el elemento. */
+[data-tilt][data-tilting] {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+[data-magnetic][data-pulling] {
+  transform: translate(var(--mx, 0px), var(--my, 0px));
+}
+
+/* Banner de cookies: transición de entrada/salida (CookieConsent.astro aplica `hidden` al terminar la salida). */
+#uc-cookie-banner {
+  transition:
+    opacity 300ms var(--ease-papel),
+    transform 300ms var(--ease-papel);
+}
+#uc-cookie-banner.uc-banner-out {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+@media (prefers-reduced-motion: reduce) {
+  #uc-cookie-banner {
+    transition: none;
+  }
+}
+
+/* Transición entre páginas: API nativa entre documentos (sin ClientRouter, así que cada
+   navegación sigue siendo una carga completa). Sin soporte (p. ej. Firefox) no cambia nada. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 220ms;
+    animation-timing-function: var(--ease-papel);
+  }
+  /* El header queda fuera del fundido para que no parpadee entre páginas. */
+  .site-header {
+    view-transition-name: site-header;
+  }
+  ::view-transition-group(site-header) {
+    animation-duration: 0s;
+  }
+}
+
+/* ============================================================
+   Navbar: guirnalda, aro y marcador (D14)
+   ============================================================ */
+@property --aro {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Aro de color: borde de 2 px con degradado cónico; garland.ts escribe --aro según el scroll. */
+.site-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--aro),
+    var(--color-rosa-fuerte),
+    var(--color-amarillo-fuerte),
+    var(--color-menta-fuerte),
+    var(--color-celeste-fuerte),
+    var(--color-lila-fuerte),
+    var(--color-durazno-fuerte),
+    var(--color-rosa-fuerte)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Guirnalda bajo la isla. Sin JavaScript: patrón estático de banderines; con JS lo sustituye el SVG. */
+.garland {
+  position: absolute;
+  left: 1.75rem;
+  right: 1.75rem;
+  top: calc(100% - 2px);
+  height: 2rem;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.garland:not([data-js]) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='252' height='30' viewBox='0 0 252 30'%3E%3Cpath d='M0 2h252' stroke='%232b2436' stroke-opacity='.5' stroke-width='1.6' fill='none'/%3E%3Cpath d='M7 2h28l-14 20z' fill='%23f7a8c4'/%3E%3Cpath d='M49 2h28L63 22z' fill='%239fd8f2'/%3E%3Cpath d='M91 2h28l-14 20z' fill='%238fe0c4'/%3E%3Cpath d='M133 2h28l-14 20z' fill='%23f6d36b'/%3E%3Cpath d='M175 2h28l-14 20z' fill='%23b9a7f0'/%3E%3Cpath d='M217 2h28l-14 20z' fill='%23f7b58a'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-size: auto 30px;
+}
+/* Con movimiento el patrón estático no se muestra hasta que el JS decide (si el módulo falla, el salvavidas retira motion-ok y reaparece). */
+.motion-ok .garland:not([data-js]) {
+  background-image: none;
+}
+/* Con el menú móvil abierto la guirnalda se retira para no pisar el panel. */
+.site-header:has(#mobile-menu[data-open='true']) .garland {
+  opacity: 0;
+}
+
+/* Entrada: la isla cae con rebote (nunca el header: su fondo fijo del menú móvil lo necesita sin transform). */
+@keyframes nav-drop {
+  from {
+    transform: translateY(-170%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes pen-in {
+  from {
+    transform: scale(0) rotate(-40deg);
+  }
+  to {
+    transform: none;
+  }
+}
+.motion-ok:not(.nav-settled) .site-nav {
+  animation: nav-drop 700ms var(--ease-pegar) backwards;
+}
+.motion-ok:not(.nav-settled) .garland[data-intro] .pen {
+  animation: pen-in 380ms var(--ease-pegar) backwards;
+  animation-delay: calc(440ms + var(--d, 0ms));
+}
+
+/* Marcador de sección activa (escritorio). */
+.nav-list {
+  position: relative;
+}
+.nav-marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  border-radius: 0.9rem;
+  background: var(--color-rosa);
+  box-shadow:
+    0 0 0 2px #fff,
+    0 4px 10px -3px rgb(247 168 196 / 0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+.nav-list .nav-link {
+  z-index: 1;
+}
+/* Con marcador, el subrayado animado sobra. */
+.site-header[data-marker='on'] .nav-link::after {
+  display: none;
+}
+
+/* Paso de «Cómo comprar» al que ya llegó la tijera (cut-line.ts). */
+.paso-activo {
+  box-shadow: 0 0 0 3px #fff, var(--shadow-tarjeta);
+}
+[data-motion-group] > article {
+  transition: box-shadow var(--dur-micro) ease;
+}
+
+/* Trazo de marcador bajo el tramo destacado de un título (Resaltado.astro + marker.ts).
+   El contenedor aísla el apilado para que el trazo (z-index: -1) quede tras el texto
+   pero sobre el fondo de la sección. reveal.ts lo dibuja con stroke-dashoffset. */
+.resaltado__host {
+  position: relative;
+  isolation: isolate;
+}
+.resaltado__trazo {
+  stroke-dasharray: 100; /* con pathLength="100": GSAP redondea a enteros los valores en px */
 }
 
 @media (prefers-reduced-motion: reduce) {

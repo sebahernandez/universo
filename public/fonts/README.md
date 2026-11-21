@@ -5,10 +5,13 @@ el `preload` en `src/layouts/Layout.astro`):
 
 | Archivo                  | Uso                                          | Estado       |
 | ------------------------ | -------------------------------------------- | ------------ |
-| `lemonilla.woff2`        | Display: títulos manuscritos (peso 400)      | ✅ instalada |
+| `lemonilla.woff2`        | Display: título manuscrito del Hero (peso 400)| ✅ instalada |
+| `fredoka-var.woff2`      | Títulos de sección (variable 300–700, latin) | ✅ instalada |
 | `nunito-sans-var.woff2`  | Cuerpo/subtítulos/tarjetas (variable 400–700)| ✅ instalada |
 
 - **Display = Lemonilla** (entregada por el cliente, un solo peso).
+- **Títulos de sección = Fredoka** (variable, self-hosted, licencia OFL): redondeada y
+  legible, contrasta con la manuscrita del Hero y combina con Nunito Sans.
 - **Cuerpo = Nunito Sans** (variable, self-hosted desde Google Fonts, licencia OFL).
   Se eligió por parecido al diseño: sans humanista, 'a' de doble piso, 'g' de un
   solo piso y terminaciones rectas. Si consigues la sans original del diseño,

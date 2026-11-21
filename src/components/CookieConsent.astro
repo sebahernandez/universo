@@ -131,11 +131,39 @@
     }
 
     var banner = document.getElementById('uc-cookie-banner');
+    var hideTimer = 0;
+    function reducedMotion() {
+      return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    // Solo presentación: entrada/salida con transición. `hidden` se aplica al terminar la
+    // salida; mientras sale, `inert` lo deja fuera del teclado y del árbol de accesibilidad.
     function show() {
-      if (banner) banner.classList.remove('hidden');
+      if (!banner) return;
+      window.clearTimeout(hideTimer);
+      banner.removeAttribute('inert');
+      if (reducedMotion()) {
+        banner.classList.remove('hidden', 'uc-banner-out');
+        return;
+      }
+      banner.classList.add('uc-banner-out');
+      banner.classList.remove('hidden');
+      void banner.offsetWidth; // fija el estado de salida antes de quitarlo
+      banner.classList.remove('uc-banner-out');
     }
     function hide() {
-      if (banner) banner.classList.add('hidden');
+      if (!banner) return;
+      window.clearTimeout(hideTimer);
+      if (reducedMotion()) {
+        banner.classList.add('hidden');
+        return;
+      }
+      banner.setAttribute('inert', '');
+      banner.classList.add('uc-banner-out');
+      hideTimer = window.setTimeout(function () {
+        banner.classList.add('hidden');
+        banner.classList.remove('uc-banner-out');
+        banner.removeAttribute('inert');
+      }, 300);
     }
 
     function decide(status) {

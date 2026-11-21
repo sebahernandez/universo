@@ -1,46 +1,52 @@
 ---
 import { productos, categorias } from '../data/productos';
 import { cld, cldSrcset } from '../lib/cloudinary';
+import Resaltado from './Resaltado.astro';
 
 const tabs = ['Todos', ...categorias];
 ---
 
-<section id="productos" class="section-blend [--sec-from:var(--color-blanco-lila)] [--sec-to:var(--color-lila-claro)]">
+<section id="productos" class="section-blend [--sec-from:var(--color-celeste)] [--sec-to:var(--color-blanco-lila)]">
   <!-- Anclas equivalentes para enlaces del Footer (no se modifica el Footer). -->
   <span id="proyectos" class="block"></span>
   <span id="que-podemos-hacer" class="block"></span>
   <div class="mx-auto max-w-sitio px-5 py-14 md:px-8 md:py-20" data-productos>
-    <h2 class="text-center font-display text-4xl leading-[1.1] text-tinta sm:text-5xl">
-      Nuestros <span class="text-rosa-fuerte">Productos</span>
+    <h2 data-motion="pegar" class="text-center font-titulo font-semibold tracking-tight text-4xl leading-[1.1] text-tinta sm:text-5xl">
+      Nuestros <Resaltado>Productos</Resaltado>
     </h2>
     <p class="mx-auto mt-3 max-w-md text-center text-base text-tinta-suave">
       Papelería creativa, stickers, cuadernos y más para inspirarte todos los días.
     </p>
 
     <!-- Pestañas de categoría -->
-    <div class="mt-8 flex flex-wrap justify-center gap-2" role="group" aria-label="Filtrar productos por categoría">
+    <div class="relative isolate mt-8 flex flex-wrap justify-center gap-2" data-motion-group data-tabs role="group" aria-label="Filtrar productos por categoría">
+      <!-- Indicador de pestaña activa (decoración): lo coloca y desliza el script de filtro. -->
+      <span data-tab-indicator class="pointer-events-none absolute top-0 left-0 z-[5] rounded-full bg-oscuro opacity-0" aria-hidden="true"></span>
       {
         tabs.map((t) => (
           <button
             type="button"
+            data-motion="subir"
             data-cat={t === 'Todos' ? 'todos' : t}
             aria-pressed={t === 'Todos' ? 'true' : 'false'}
             class="rounded-full border border-tinta/10 bg-white px-4 py-2 text-sm font-semibold text-tinta shadow-suave transition-colors aria-[pressed=true]:border-oscuro aria-[pressed=true]:bg-oscuro aria-[pressed=true]:text-white"
           >
-            {t}
+            <span class="relative z-10">{t}</span>
           </button>
         ))
       }
     </div>
 
     <!-- Tarjetas -->
-    <div class="mt-8 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+    <div class="mt-8 grid grid-cols-2 gap-4 [perspective:1000px] sm:gap-5 lg:grid-cols-4" data-motion-group>
       {
         productos.map((p) => (
           <a
             href="/#contacto"
+            data-motion="subir"
+            data-tilt
             data-categoria={p.categoria}
-            class="group flex flex-col overflow-hidden rounded-tarjeta border border-tinta/10 bg-white shadow-suave transition-transform hover:-translate-y-0.5"
+            class="block aspect-square overflow-hidden rounded-tarjeta border border-tinta/10 bg-white shadow-suave transition-transform hover:-translate-y-0.5"
           >
             <img
               src={cld(p.src, 480)}
@@ -51,19 +57,9 @@ const tabs = ['Todos', ...categorias];
               alt={p.alt}
               loading="lazy"
               decoding="async"
-              class="aspect-square w-full object-cover"
+              data-tilt-zoom
+              class="h-[110%] w-full max-w-none object-cover object-top"
             />
-            <div class="flex items-end justify-between gap-2 p-4">
-              <div class="min-w-0">
-                <h3 class="truncate text-sm font-bold text-tinta sm:text-base">{p.nombre}</h3>
-                <p class="mt-0.5 text-xs text-tinta-suave">{p.categoria}</p>
-              </div>
-              <span class="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-rosa text-rosa-fuerte transition-transform group-hover:translate-x-0.5" aria-hidden="true">
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-              </span>
-            </div>
           </a>
         ))
       }
@@ -72,6 +68,7 @@ const tabs = ['Todos', ...categorias];
     <div class="mt-10 text-center">
       <a
         href="/#contacto"
+        data-confetti
         class="inline-block rounded-full bg-oscuro px-8 py-4 text-sm font-semibold text-white shadow-suave transition-transform hover:-translate-y-0.5"
       >
         Ver todos los productos
@@ -80,20 +77,120 @@ const tabs = ['Todos', ...categorias];
   </div>
 </section>
 
+<style>
+  /* Con el indicador deslizante activo, la pastilla oscura la pone el indicador y el
+     botón pulsado solo cambia el color del texto (con un pequeño retardo para que
+     el indicador llegue antes de que el texto se vuelva blanco). */
+  [data-tabs][data-indicator='on'] button[aria-pressed='true'] {
+    background-color: #fff;
+    border-color: rgb(43 36 54 / 0.1);
+  }
+  [data-tabs][data-indicator='on'] button {
+    transition-delay: 120ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-tabs][data-indicator='on'] button {
+      transition-delay: 0ms;
+    }
+  }
+</style>
+
 <script>
+  import { gsap } from 'gsap';
+  import { Flip } from 'gsap/Flip';
+  import { revealNow } from '../scripts/motion/reveal';
+
+  gsap.registerPlugin(Flip);
+
   const section = document.querySelector<HTMLElement>('[data-productos]');
   if (section) {
     const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[data-cat]'));
     const cards = Array.from(section.querySelectorAll<HTMLElement>('[data-categoria]'));
+    const grid = cards[0]?.parentElement as HTMLElement | undefined;
+    const group = section.querySelector<HTMLElement>('[data-tabs]');
+    const indicator = section.querySelector<HTMLElement>('[data-tab-indicator]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let current = 'todos';
+    let flip: gsap.core.Timeline | null = null;
+    let growth: gsap.core.Tween | null = null;
 
-    function filter(cat: string) {
+    const matches = (c: HTMLElement, cat: string) => cat === 'todos' || c.dataset.categoria === cat;
+
+    // Final state, expressed exactly as before: `hidden`, aria-pressed.
+    function applyState(cat: string) {
       cards.forEach((c) => {
-        c.hidden = !(cat === 'todos' || c.dataset.categoria === cat);
+        c.hidden = !matches(c, cat);
+        // A card shown by the filter before it scrolled into view must not stay hidden by the reveal CSS.
+        if (!c.hidden) revealNow(c);
       });
       tabs.forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.cat === cat)));
     }
 
+    // Drops any animation in progress and the inline styles Flip leaves behind.
+    function abort() {
+      flip?.kill();
+      growth?.kill();
+      flip = null;
+      growth = null;
+      Flip.killFlipsOf(cards);
+      gsap.killTweensOf(cards);
+      gsap.set(cards, { clearProps: 'all' });
+      if (grid) gsap.set(grid, { clearProps: 'height' });
+    }
+
+    function placeIndicator(animate: boolean) {
+      const active = tabs.find((t) => t.getAttribute('aria-pressed') === 'true');
+      if (!indicator || !active || group?.dataset.indicator !== 'on') return;
+      const box = { x: active.offsetLeft, y: active.offsetTop, width: active.offsetWidth, height: active.offsetHeight };
+      if (animate) gsap.to(indicator, { ...box, duration: 0.4, ease: 'power3.out', overwrite: true });
+      else gsap.set(indicator, box);
+    }
+
+    function filter(cat: string) {
+      abort();
+      const previous = tabs.find((t) => t.dataset.cat === current);
+      const animate = !reduced.matches && !!grid;
+      current = cat;
+
+      if (!animate) {
+        applyState(cat);
+        placeIndicator(false);
+        return;
+      }
+
+      // The indicator only takes over after the first filter change: until then the pressed button's own style shows.
+      if (group && indicator && group.dataset.indicator !== 'on' && previous) {
+        gsap.set(indicator, { x: previous.offsetLeft, y: previous.offsetTop, width: previous.offsetWidth, height: previous.offsetHeight, opacity: 1 });
+        group.dataset.indicator = 'on';
+      }
+
+      const state = Flip.getState(cards);
+      const before = grid!.offsetHeight;
+      applyState(cat);
+      const after = grid!.offsetHeight;
+      placeIndicator(true);
+
+      // Flip takes cards out of the flow, so the grid height is driven explicitly meanwhile.
+      gsap.set(grid!, { height: before });
+      growth = gsap.to(grid!, { height: after, duration: 0.5, ease: 'power3.inOut' });
+      flip = Flip.from(state, {
+        duration: 0.5,
+        ease: 'power3.inOut',
+        absolute: true,
+        onEnter: (els) => gsap.fromTo(els, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.4, delay: 0.1, ease: 'power3.out' }),
+        onLeave: (els) => gsap.to(els, { opacity: 0, scale: 0.9, duration: 0.3, ease: 'power3.in' }),
+        onComplete: () => {
+          abort();
+          applyState(current);
+        },
+      }) as gsap.core.Timeline;
+    }
+
     tabs.forEach((t) => t.addEventListener('click', () => filter(t.dataset.cat || 'todos')));
-    filter('todos');
+    if (group && 'ResizeObserver' in window) {
+      new ResizeObserver(() => placeIndicator(false)).observe(group);
+    }
+    document.fonts?.ready.then(() => placeIndicator(false));
+    applyState('todos');
   }
 </script>
