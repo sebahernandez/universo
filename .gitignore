@@ -26,3 +26,7 @@ yarn-error.log*
 # python cache
 __pycache__/
 *.pyc
+
+# local agent tooling
+.atl/
+.claude/skills/frontend-design/
