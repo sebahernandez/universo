@@ -28,6 +28,8 @@ const jsonLd = {
   '@type': 'OnlineStore',
   '@id': `${Astro.site?.href}#organizacion`,
   name: site.name,
+  legalName: site.legal.razonSocial,
+  taxID: site.legal.rut,
   description: site.description,
   url: Astro.site?.href,
   email: site.email,

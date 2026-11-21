@@ -6,6 +6,11 @@ export const site = {
   description:
     'Papelería creativa personalizada: invitaciones, recuerdos, fotografías y proyectos impresos a medida. Taller chileno con envíos a todo Chile. Cotiza por WhatsApp.',
   email: 'hola@universocrafter.cl',
+  // Datos legales del negocio. Fuente única para footer, páginas legales y JSON-LD.
+  legal: {
+    razonSocial: 'Universo Crafter SpA',
+    rut: '78.519.223-0',
+  },
   // Tienda online (sin dirección de calle pública). Ubicación regional para SEO.
   address: {
     street: '',

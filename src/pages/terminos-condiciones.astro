@@ -4,12 +4,12 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
-const actualizado = 'septiembre de 2026';
+const actualizado = 'noviembre de 2026';
 ---
 
 <Layout
   title="Términos y condiciones · Universo Crafter"
-  description="Condiciones de venta de Universo Crafter SpA: pedidos, precios, pagos, producción, envíos, cambios y devoluciones, y propiedad intelectual."
+  description={`Condiciones de venta de ${site.legal.razonSocial}: pedidos, precios, pagos, producción, envíos, cambios y devoluciones, y propiedad intelectual.`}
 >
   <Header />
 
@@ -23,10 +23,10 @@ const actualizado = 'septiembre de 2026';
       <section>
         <h2 class="text-xl font-bold text-tinta">1. Quiénes somos</h2>
         <p class="mt-3 leading-relaxed text-tinta-suave">
-          Este sitio y la venta de productos son operados por <strong>Universo
-          Crafter SpA</strong> (en adelante, "Universo Crafter"), una tienda
+          Este sitio y la venta de productos son operados por{' '}
+          <strong>{site.legal.razonSocial}</strong> (en adelante, "Universo Crafter"), una tienda
           online de papelería creativa personalizada con base en Santiago,
-          Región Metropolitana, Chile. RUT: [PLACEHOLDER: RUT de la empresa].
+          Región Metropolitana, Chile. RUT: {site.legal.rut}.
           Puedes contactarnos por correo a
           <a
             href={`mailto:${site.email}`}
