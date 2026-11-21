@@ -14,13 +14,6 @@ const contactos = [
     bg: 'bg-rosa/45',
   },
   {
-    label: 'Facebook',
-    value: site.facebookHandle,
-    href: site.facebook,
-    icon: 'facebook',
-    bg: 'bg-celeste/55',
-  },
-  {
     label: 'WhatsApp',
     value: site.whatsappDisplay,
     href: whatsappLink,
@@ -72,15 +65,6 @@ const contactos = [
                       <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#ig-grad)" />
                       <circle cx="12" cy="12" r="4" fill="none" stroke="#fff" stroke-width="1.8" />
                       <circle cx="17.2" cy="6.8" r="1.2" fill="#fff" />
-                    </svg>
-                  )}
-                  {c.icon === 'facebook' && (
-                    <svg class="h-7 w-7" viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="12" cy="12" r="10" fill="#1877F2" />
-                      <path
-                        d="M13.5 20v-6.5h2.1l.4-2.6h-2.5V9.2c0-.75.25-1.26 1.33-1.26H16V5.6c-.26-.03-1.13-.11-2.14-.11-2.12 0-3.57 1.29-3.57 3.67v2.04H8v2.6h2.29V20h3.21z"
-                        fill="#fff"
-                      />
                     </svg>
                   )}
                   {c.icon === 'whatsapp' && (

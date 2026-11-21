@@ -23,7 +23,7 @@ export const faq: FaqItem[] = [
   {
     pregunta: '¿Cómo hago mi compra?',
     respuesta:
-      'Puedes escribirnos por WhatsApp, Instagram o Facebook, o completar el formulario de contacto del sitio. Te responderemos para coordinar tu pedido y resolver tus dudas.',
+      'Puedes escribirnos por WhatsApp o Instagram, o completar el formulario de contacto del sitio. Te responderemos para coordinar tu pedido y resolver tus dudas.',
   },
   {
     pregunta: '¿Puedo pedir un diseño 100% a medida?',

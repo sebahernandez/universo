@@ -100,7 +100,7 @@ export type CompraCard = {
 export const comoComprar: CompraCard[] = [
   {
     title: 'Compra por RRSS',
-    text: 'Escríbenos por WhatsApp, Instagram o Facebook y cuéntanos qué te gustaría que creáramos para ti o esa celebración especial.',
+    text: 'Escríbenos por WhatsApp o Instagram y cuéntanos qué te gustaría que creáramos para ti o esa celebración especial.',
     icon: 'compra-por-rrss.png',
   },
   {
