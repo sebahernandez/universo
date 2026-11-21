@@ -1,0 +1,68 @@
+name: Deploy
+
+# Cada push a main despliega a producción. La ejecución manual permite simular.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Simular: listar cambios sin modificar el servidor"
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Configurar SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Sincronizar dist/ con el servidor
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '--dry-run' || '' }}
+        run: |
+          # Sin ruta de destino, rsync --delete actuaría sobre el home del usuario.
+          if [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$DEPLOY_PATH" ]; then
+            echo "Faltan los secrets SSH_HOST, SSH_USER o DEPLOY_PATH" >&2
+            exit 1
+          fi
+          test -f dist/index.html
+
+          # Los --exclude protegen lo que vive en el servidor y no sale del build.
+          rsync -az --delete --itemize-changes $DRY_RUN \
+            --exclude '/.htaccess' \
+            --exclude '/.well-known/' \
+            --exclude '/cgi-bin/' \
+            -e "ssh -i $HOME/.ssh/deploy_key -p ${SSH_PORT:-22} -o StrictHostKeyChecking=yes" \
+            dist/ "$SSH_USER@$SSH_HOST:${DEPLOY_PATH%/}/"
