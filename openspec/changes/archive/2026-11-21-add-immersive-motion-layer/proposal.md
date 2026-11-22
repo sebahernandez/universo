@@ -12,7 +12,7 @@ Dirección creativa: **«Papel vivo»**. Todo lo que se mueve se comporta como p
 - **Revelado al scroll por sección**, cada una con su gesto propio en lugar de un mismo fade repetido:
   - *Por qué elegirnos*: las cuatro tarjetas se pegan como stickers, en cascada, y se inclinan en 3D siguiendo el puntero.
   - *Nosotros*: el texto se ilumina palabra a palabra acompañando el scroll.
-  - *Cada momento*: la imagen se descubre con un recorte y parallax interno; el carrusel de testimonios pasa a tener transición entre láminas, gesto de deslizar y estrellas que se rellenan una a una.
+  - *Testimonios*: el carrusel pasa a tener transición entre láminas, gesto de deslizar y estrellas que se rellenan una a una.
   - *Productos*: al filtrar, las tarjetas se reordenan con animación (las que salen se encogen, las que quedan se deslizan a su nuevo lugar) y el indicador de pestaña activa se desliza; las tarjetas reaccionan al puntero.
   - *Cómo comprar*: una línea de corte punteada con una tijera recorre los tres pasos al desplazar, y cada paso se activa cuando la tijera llega.
   - *Preguntas frecuentes* y *Contacto*: entrada en cascada; el sobre decorativo flota y reacciona al puntero; los campos del formulario responden al foco.
@@ -36,7 +36,12 @@ No cambia: textos, imágenes, orden de secciones, datos (`src/data/*`), formular
 
 ### Modified Capabilities
 
-Ninguna. La intensificación del header al desplazarse ya está exigida por `site-navigation` («La isla se intensifica al desplazarse fuera del Hero»); este cambio la implementa sin alterar el requisito. Las interacciones funcionales del carrusel y del filtro definidas por `mobile-landing-redesign` se conservan; aquí solo se añade cómo transicionan.
+- `contact-and-social`: se retira Facebook como red social y los accesos a WhatsApp e Instagram pasan a estar visibles en la barra del menú también en móvil.
+- `product-catalog`: las tarjetas de producto muestran solo la imagen, sin nombre, categoría ni botón.
+- `home-engagement-ctas`: se retira la capacidad; el banner «Papelería para cada momento» se eliminó y los otros dos bloques no existen en la home.
+- `site-navigation`: los accesos a redes del header pasan a discos de color visibles también en móvil, y la indicación de hover de los enlaces de escritorio es el marcador de sección.
+
+La intensificación del header al desplazarse ya está exigida por `site-navigation` («La isla se intensifica al desplazarse fuera del Hero»); este cambio la implementa sin alterar el requisito. Las interacciones funcionales del carrusel y del filtro definidas por `mobile-landing-redesign` se conservan; aquí solo se añade cómo transicionan.
 
 ## Impact
 

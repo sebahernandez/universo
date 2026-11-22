@@ -80,6 +80,15 @@ Verificación en navegador: `npm run dev` (o `npm run build && npm run preview`)
 - [x] 12.5 Añadir el aro de degradado en el borde de la isla con giro ligado al scroll, conservando el fondo blanco sólido y la intensificación de sombra existente; verificar que el aro gira solo al desplazar, que el fondo de la isla sigue siendo blanco opaco y que logo, enlaces e iconos conservan su contraste.
 - [x] 12.6 Integración del navbar: `npm run build`, recorrido de las cinco páginas en 375, 768 y 1440 px con movimiento permitido, con movimiento reducido y con JavaScript desactivado; verificar que no hay scroll horizontal, que el menú es utilizable en los tres modos, que el incremento total de JavaScript de la home sigue dentro de 45 KB gzip respecto de `main` y que `openspec validate add-immersive-motion-layer --strict` pasa.
 
+## 13. Ajustes tras la revisión
+
+- [x] 13.1 Dejar las tarjetas de producto solo con la imagen a tamaño completo, conservando la inclinación 3D; verificado en 375 y 1440 px que la imagen llena la tarjeta y que el filtro muestra las mismas tarjetas.
+- [x] 13.2 Eliminar la tarjeta «Papelería para cada momento» y su módulo de movimiento, y ubicar Productos bajo Nosotros con Testimonios a continuación; verificado el orden de secciones, el carrusel y el marcador del menú.
+- [x] 13.3 Mostrar WhatsApp e Instagram en la barra móvil y añadir las redes con su cuenta al menú móvil; verificado sin desbordamiento en 320, 375 y 430 px.
+- [x] 13.4 Rediseñar los chips de redes del header como discos pastel con icono oscuro de 20 px; verificado por captura en escritorio y móvil.
+- [x] 13.5 Cambiar la tipografía de los títulos de sección a Fredoka manteniendo la manuscrita en el Hero; verificado que carga y que ningún título desborda en 375 y 1440 px.
+- [x] 13.6 Retirar Facebook de componentes, datos, datos estructurados y textos; verificado que no queda ninguna mención en `src` ni en `dist`.
+
 ## Workflow follow-up
 
 - Archivar primero `mobile-landing-redesign` (completo, 24/24) para que los specs principales reflejen la home actual antes de sincronizar este cambio.

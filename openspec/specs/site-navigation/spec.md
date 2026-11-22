@@ -6,26 +6,30 @@ Define el comportamiento visual e interactivo del menú de navegación principal
 ## Requirements
 
 ### Requirement: Menú flotante estilo glass (isla)
-El header SHALL presentarse como una isla flotante de vidrio esmerilado (fondo blanco semi-transparente + `backdrop-filter` blur + sombra suave + borde sutil) con esquinas claramente redondeadas, que abarca únicamente el menú y NO SHALL ocupar todo el ancho como una barra sólida. El degradado del Hero SHALL percibirse por detrás y alrededor de la isla. Donde `backdrop-filter` no tenga soporte, la opacidad del fondo SHALL subir para preservar la legibilidad.
+El header SHALL presentarse como una isla flotante con **fondo blanco sólido (opaco)** tanto en móvil como en escritorio, con esquinas claramente redondeadas, sombra suave y borde sutil, que abarca únicamente el menú y NO SHALL ocupar todo el ancho como una barra de borde a borde. El fondo blanco SHALL mantenerse tanto en la carga inicial sobre el Hero como en el resto de las secciones, conservando contraste suficiente del logo, los enlaces y los iconos sin depender de `backdrop-filter`.
 
 #### Scenario: Carga inicial de la página
 - **WHEN** el usuario carga o recarga una página con Hero y la posición de scroll está en la parte superior
-- **THEN** el menú se muestra como una isla de vidrio esmerilado con esquinas redondeadas, y el degradado del Hero es visible por detrás y a los lados de la isla
+- **THEN** el menú se muestra como una isla con fondo blanco sólido y esquinas redondeadas, y el degradado del Hero es visible alrededor de la isla pero no a través de ella
 
 #### Scenario: La isla no ocupa todo el ancho
 - **WHEN** se observa el header en cualquier viewport
 - **THEN** la isla tiene márgenes respecto a los bordes y envuelve sólo el contenido del menú, sin dibujarse como una barra de borde a borde
 
+#### Scenario: Fondo blanco en móvil y escritorio
+- **WHEN** se observa el header en un viewport móvil (320–430 px) o de escritorio
+- **THEN** el fondo del navbar es blanco sólido en ambos casos, y el logo, los enlaces y el botón de menú se leen con contraste suficiente
+
 #### Scenario: Navegador sin backdrop-filter
 - **WHEN** el navegador no soporta `backdrop-filter`
-- **THEN** la isla usa un fondo más opaco de modo que el logo, los enlaces y los iconos siguen siendo legibles
+- **THEN** la isla mantiene su fondo blanco sólido sin cambios, de modo que el logo, los enlaces y los iconos siguen siendo legibles
 
 ### Requirement: La isla se intensifica al desplazarse fuera del Hero
-Cuando el usuario desplaza la página más allá de la sección Hero, la isla SHALL volverse algo más opaca y con una sombra más marcada (manteniendo el estilo glass), para reforzar la legibilidad sobre el resto de secciones del sitio.
+Cuando el usuario desplaza la página más allá de la sección Hero, la isla SHALL reforzar su sombra (manteniendo el fondo blanco sólido), para separarse visualmente del contenido y reforzar la legibilidad sobre el resto de secciones del sitio.
 
 #### Scenario: Scroll más allá del Hero
 - **WHEN** el usuario desplaza la página hasta que la sección Hero deja de estar en la parte superior del viewport
-- **THEN** la isla aumenta su opacidad y su sombra, y el logo, los enlaces y el botón de menú mantienen contraste suficiente
+- **THEN** la isla intensifica su sombra manteniendo el fondo blanco, y el logo, los enlaces y el botón de menú mantienen contraste suficiente
 
 #### Scenario: El menú permanece visible al desplazar
 - **WHEN** el usuario continúa desplazándose por cualquier sección posterior al Hero
@@ -83,7 +87,7 @@ El botón de menú (hamburguesa) en móvil y el logo SHALL mantener suficiente c
 - **THEN** el botón de menú y su ícono mantienen el mismo nivel de contraste y reconocibilidad
 
 ### Requirement: Enlaces de escritorio en negrita con indicación animada
-En viewports de escritorio, cada enlace de navegación SHALL mostrarse en negrita (peso 700) y en el color de tinta fuerte, y SHALL mostrar una indicación visual animada (p. ej. subrayado) al pasar el cursor (hover) y al tener el foco de teclado, más allá de un simple cambio de color.
+En viewports de escritorio, cada enlace de navegación SHALL mostrarse en negrita (peso 700) y en el color de tinta fuerte, y SHALL mostrar una indicación visual animada al pasar el cursor (hover) y al tener el foco de teclado, más allá de un simple cambio de color. Con la capa de movimiento activa la indicación es el marcador de sección; sin JavaScript, un subrayado.
 
 #### Scenario: Aspecto en reposo
 - **WHEN** se observan los enlaces de navegación en escritorio
@@ -91,26 +95,30 @@ En viewports de escritorio, cada enlace de navegación SHALL mostrarse en negrit
 
 #### Scenario: Hover sobre un enlace
 - **WHEN** el usuario pasa el cursor sobre un enlace de navegación en escritorio
-- **THEN** el enlace muestra una indicación visual animada (p. ej. subrayado) además del cambio de color
+- **THEN** el marcador se desliza hasta el enlace y el texto conserva su color de tinta
+
+#### Scenario: Hover sin JavaScript
+- **WHEN** JavaScript está deshabilitado y el usuario pasa el cursor sobre un enlace
+- **THEN** el enlace muestra un subrayado animado
 
 #### Scenario: Foco de teclado sobre un enlace
 - **WHEN** el usuario navega con el teclado (Tab) hasta un enlace de navegación
 - **THEN** el enlace muestra un indicador de foco visible y con contraste suficiente, consistente con el estilo de hover
 
-### Requirement: Iconos de redes sociales como chips de vidrio
-Los enlaces de redes sociales en el header SHALL presentarse como chips circulares de vidrio acordes a la isla, con una leve elevación y color de marca al pasar el cursor, foco de teclado visible, y respetando `prefers-reduced-motion`. En pantallas pequeñas SHALL ocultarse, donde las redes se ofrecen dentro del menú móvil.
+### Requirement: Accesos a redes sociales como discos de color en el header
+Los enlaces de redes sociales en el header SHALL presentarse como discos rellenos con un color pastel propio de cada red y un icono en color de tinta de al menos 20 px, con contraste mínimo de 3:1, leve elevación al pasar el cursor y foco de teclado visible, respetando `prefers-reduced-motion`. SHALL mostrarse en la barra en todos los anchos de viewport sin provocar desbordamiento, y las redes SHALL ofrecerse además dentro del menú móvil con su nombre de cuenta.
 
 #### Scenario: Chips en escritorio
 - **WHEN** se observa el header en un viewport amplio
-- **THEN** cada red social aparece como un chip circular de vidrio, y al pasar el cursor se eleva levemente y toma su color de marca
+- **THEN** cada red social aparece como un disco de color con su icono oscuro, y al pasar el cursor se eleva levemente
 
 #### Scenario: Foco de teclado en un chip
-- **WHEN** el usuario enfoca un chip de red social con el teclado
+- **WHEN** el usuario enfoca un acceso de red social con el teclado
 - **THEN** se muestra un indicador de foco visible
 
 #### Scenario: Pantallas pequeñas
-- **WHEN** se observa el header en un viewport angosto (móvil)
-- **THEN** los chips de redes no se muestran en la barra y las redes quedan disponibles dentro del menú móvil
+- **WHEN** se observa el header en un viewport de 320 px de ancho
+- **THEN** los discos de redes se muestran en la barra junto al logo y al botón de menú, sin scroll horizontal, y las redes aparecen también dentro del menú móvil
 
 ### Requirement: Interacción del menú móvil se preserva
 El comportamiento de apertura, cierre y navegación del menú móvil desplegable SHALL mantenerse sin regresiones: abrir/cerrar con el botón de hamburguesa, cerrar al tocar el fondo oscurecido, cerrar al presionar Escape, cerrar al seleccionar un enlace, y cerrar al tocar fuera del header.

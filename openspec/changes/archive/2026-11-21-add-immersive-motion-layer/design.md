@@ -92,7 +92,7 @@ Para no pelear con `hover:-translate-y-0.5` ni con los anillos de foco:
 
 Los títulos manuscritos entran como bloque completo (opacidad, `translateY`, rotación de −3° a 0 con rebote). No se dividen en letras ni se envuelven en contenedores con `overflow: hidden`, que es lo que recortaría los glifos. El trazo de marcador es un SVG posicionado bajo el tramo destacado ya existente, dibujado con `stroke-dashoffset`, `aria-hidden` y `pointer-events: none`.
 
-La excepción de división de texto es Nosotros: son párrafos en la tipografía sans, se dividen en palabras con `SplitText` (que conserva el texto completo para tecnologías de asistencia) y solo se anima `opacity` entre 0.35 y 1, con contraste suficiente en el estado atenuado.
+La excepción de división de texto es Nosotros: son párrafos en la tipografía sans, se dividen en palabras con `SplitText` (que conserva el texto completo para tecnologías de asistencia) y solo se anima `opacity` entre 0.66 y 1 (0.35 daba un contraste de 2:1), con contraste suficiente en el estado atenuado.
 
 ### D6. Filtro de productos con Flip, conservando `hidden` como estado final
 
@@ -153,7 +153,7 @@ También se añade `overflow-x: clip` en `html` para garantizar «Sin desbordami
 | Hero | secuencia CSS: distintivo → 3 líneas → párrafo → CTA | parallax del fondo (escala 1.12 para tener margen), 6–8 piezas de papel en 3 capas, CTA magnéticos, confeti en CTA |
 | Por qué elegirnos | título sticker + trazo; tarjetas *pegar* en cascada con giros alternos | inclinación 3D |
 | Nosotros | título sticker | palabras iluminadas por scroll |
-| Cada momento | recorte de la imagen (`clip-path`), luego texto superpuesto | parallax interno de la imagen; carrusel con transición, deslizar y estrellas |
+| Testimonios | título sticker | carrusel con transición, deslizar y estrellas |
 | Productos | título, pestañas y tarjetas en cascada | Flip al filtrar, indicador deslizante, inclinación |
 | Cómo comprar | tarjetas en cascada | línea de corte con tijera ligada al scroll; imágenes decorativas con parallax leve |
 | FAQ | preguntas en cascada (deslizamiento lateral corto) | acordeón existente, sin cambios |
@@ -175,6 +175,19 @@ El navbar concentra el gesto más reconocible del sitio: una guirnalda de bander
 - Con movimiento reducido: guirnalda quieta y coloreada, sin caída, aro quieto, marcador sin deslizamiento.
 
 Alternativas descartadas: ocultar el menú al bajar y mostrarlo al subir (contradice «El menú permanece visible al desplazar» de `site-navigation`); fondo de vidrio con desenfoque (el spec vigente exige blanco sólido); aro con giro continuo por tiempo (bucle permanente siempre en pantalla).
+
+### D15. Ajustes posteriores a la implementación
+
+Cambios pedidos tras revisar el sitio en el navegador; prevalecen sobre lo anterior donde difieren.
+
+- **Home**: se eliminó la tarjeta «Papelería para cada momento» (y su módulo de recorte y parallax). El orden queda Hero, Por qué elegirnos, Nosotros, Productos, Testimonios, Cómo comprar, FAQ, Contacto. El componente pasó a llamarse `Testimonios.astro`.
+- **Tarjetas de producto**: solo imagen, sin nombre, categoría ni flecha, porque la inclinación 3D se lee mejor así. El nombre accesible sale del texto alternativo. La imagen mide 110 % del alto de la tarjeta para recortar la banda clara del borde inferior de las fotos.
+- **Tipografía**: los títulos de sección usan Fredoka variable alojada en el sitio (`--font-titulo`); la manuscrita queda solo en el título del Hero.
+- **Redes**: Facebook se retiró de todo el sitio. Los accesos a WhatsApp e Instagram son discos pastel con icono oscuro de 20 px, visibles en la barra también en móvil; el menú móvil abierto muestra Instagram con su cuenta.
+- **Línea de corte**: pasa a horizontal desde `md` (48rem), donde la cuadrícula ya tiene tres columnas, no desde `lg`.
+- **Guirnalda**: tres ondas (dos en móvil) con un resorte por banderín; se oculta con el menú móvil abierto y, sin JavaScript, es un patrón CSS estático. Pasa sobre el contenido al desplazar, sin interceptar clics.
+- **Progreso con movimiento reducido**: la guirnalda se muestra coloreada y quieta, sin indicar avance.
+- **Inclinación y magnetismo**: escriben propiedades CSS (`--rx/--ry`, `--mx/--my`) en lugar de `transform` en línea, porque `gsap` anulaba el `translate` del `hover`.
 
 ## Risks / Trade-offs
 

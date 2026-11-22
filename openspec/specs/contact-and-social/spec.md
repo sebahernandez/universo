@@ -7,7 +7,7 @@ Define los canales de contacto (formulario, WhatsApp, email) y los perfiles de r
 
 ### Requirement: Fuente única de datos de contacto y redes
 
-Los datos de contacto y redes sociales (email, WhatsApp, Instagram, Facebook y ubicación) SHALL definirse en un único módulo de datos del sitio, y todos los componentes que los muestran SHALL leer de esa fuente, sin duplicar valores literales.
+Los datos de contacto y redes sociales (email, WhatsApp, Instagram y ubicación) SHALL definirse en un único módulo de datos del sitio, y todos los componentes que los muestran SHALL leer de esa fuente, sin duplicar valores literales.
 
 #### Scenario: Cambiar un dato en un solo lugar
 
@@ -73,12 +73,22 @@ El sitio SHALL exponer un email de contacto como enlace `mailto:` en el footer.
 
 ### Requirement: Perfiles de redes sociales
 
-El sitio SHALL mostrar sus perfiles de Instagram y Facebook en el footer ("Síguenos") y en la sección de contacto; los enlaces externos SHALL abrir en una pestaña nueva con `rel="noopener"`.
+El sitio SHALL mostrar su perfil de Instagram en el footer ("Síguenos"), en la sección de contacto y en el menú de navegación (en la barra y dentro del menú móvil, junto con WhatsApp); los enlaces externos SHALL abrir en una pestaña nueva con `rel="noopener"`. El sitio NO SHALL enlazar ni mencionar un perfil de Facebook.
 
 #### Scenario: Enlaces sociales seguros en pestaña nueva
 
-- **WHEN** el visitante activa un enlace a Instagram o Facebook
+- **WHEN** el visitante activa un enlace a Instagram
 - **THEN** el perfil se abre en una pestaña nueva con `rel="noopener"`
+
+#### Scenario: Acceso directo en móvil
+
+- **WHEN** el visitante ve el menú de navegación en un viewport móvil sin abrir el menú
+- **THEN** los accesos a WhatsApp e Instagram están visibles en la barra
+
+#### Scenario: Sin Facebook
+
+- **WHEN** se busca "Facebook" en el contenido y en los datos estructurados de cualquier página del sitio
+- **THEN** no aparece ninguna mención ni enlace
 
 ### Requirement: Representación como tienda online en SEO
 
@@ -87,7 +97,7 @@ Los datos estructurados del negocio SHALL representarlo como **tienda online** c
 #### Scenario: Schema sin dirección física contradictoria
 
 - **WHEN** se genera el JSON-LD del negocio
-- **THEN** incluye `sameAs` (Instagram, Facebook), `telephone` (WhatsApp), `email` y área de servicio Chile, sin una dirección de calle física de un local no público
+- **THEN** incluye `sameAs` (Instagram), `telephone` (WhatsApp), `email` y área de servicio Chile, sin una dirección de calle física de un local no público
 
 #### Scenario: Consistencia footer ↔ schema
 

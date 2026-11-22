@@ -1,10 +1,9 @@
-# Spec Delta
+# home-motion Specification
 
 ## Purpose
-
 Define cómo se mueve y responde cada sección de la home: la entrada del Hero, los revelados al desplazar, la respuesta al puntero y las transiciones de los cambios de estado, de modo que la página comunique celebración y oficio artesanal.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Entrada orquestada del Hero
 Al cargar la home con movimiento permitido, el distintivo, las tres líneas del título, el párrafo y los dos CTA del Hero SHALL entrar en secuencia, en ese orden, y la secuencia completa SHALL terminar en 1.6 segundos o menos desde el primer pintado. La entrada SHALL comenzar sin esperar a la descarga del código de movimiento.
@@ -84,17 +83,6 @@ Con movimiento permitido, el texto de la sección Nosotros SHALL pasar de atenua
 - **WHEN** un lector de pantalla lee la sección Nosotros
 - **THEN** anuncia los párrafos completos como texto corrido, sin fragmentarlos palabra por palabra
 
-### Requirement: Imagen de «Cada momento» con recorte y parallax
-La imagen de la sección «Cada momento» SHALL descubrirse con un recorte progresivo al entrar en el viewport y SHALL desplazarse levemente dentro de su marco al hacer scroll, sin dejar ver bordes vacíos ni mover el texto superpuesto fuera de su zona legible.
-
-#### Scenario: Entrada de la imagen
-- **WHEN** la tarjeta de imagen entra en el viewport
-- **THEN** la imagen se descubre progresivamente y el título, el párrafo y el CTA superpuestos aparecen a continuación
-
-#### Scenario: Desplazamiento con la imagen visible
-- **WHEN** el usuario desplaza la página con la tarjeta visible
-- **THEN** la imagen se mueve dentro de su marco sin mostrar huecos en los bordes
-
 ### Requirement: Transición del carrusel de testimonios
 Al cambiar de testimonio, el saliente y el entrante SHALL transicionar con un desplazamiento en la dirección de la navegación, en 500 ms o menos. Las estrellas del testimonio entrante SHALL rellenarse en secuencia. En táctil, deslizar horizontalmente sobre el carrusel SHALL cambiar de testimonio. Los botones anterior/siguiente y los puntos SHALL seguir funcionando igual.
 
@@ -171,7 +159,7 @@ En escritorio, los CTA principales de la home SHALL desplazarse levemente hacia 
 - **THEN** el botón se desplaza hacia el puntero sin superar 8 px y sigue siendo pulsable en toda su superficie
 
 ### Requirement: Guirnalda de banderines como progreso de lectura
-Bajo la isla del menú SHALL colgar una guirnalda de banderines en la paleta del sitio que actúa como indicador de progreso: los banderines se colorean de izquierda a derecha de forma continua, del 0 % en la parte superior de la página al 100 % al final. La guirnalda SHALL no alterar el tamaño ni la posición del menú, SHALL no interceptar clics ni toques y SHALL no tapar texto ni controles del contenido.
+Bajo la isla del menú SHALL colgar una guirnalda de banderines en la paleta del sitio que actúa como indicador de progreso: los banderines se colorean de izquierda a derecha de forma continua, del 0 % en la parte superior de la página al 100 % al final. La guirnalda SHALL no alterar el tamaño ni la posición del menú y SHALL no interceptar clics ni toques; al desplazar la página puede pasar por encima del contenido, sin colgar más de 32 px bajo la isla.
 
 #### Scenario: Desplazamiento por la home
 - **WHEN** el usuario desplaza la página desde arriba hasta el final
@@ -187,7 +175,7 @@ Bajo la isla del menú SHALL colgar una guirnalda de banderines en la paleta del
 
 #### Scenario: Viewport móvil
 - **WHEN** se observa el header en un viewport de 375 px, con el menú móvil cerrado y abierto
-- **THEN** la guirnalda cuelga bajo la isla sin tapar el logo, el botón de menú ni los enlaces del menú abierto
+- **THEN** la guirnalda cuelga bajo la isla sin tapar el logo ni el botón de menú, y se oculta mientras el menú está abierto
 
 ### Requirement: La guirnalda se balancea con el desplazamiento
 Con movimiento permitido, los banderines SHALL balancearse según la velocidad y la dirección del scroll y volver al reposo con un rebote amortiguado cuando el scroll se detiene. En escritorio, pasar el puntero por la isla SHALL provocar una ondulación de la guirnalda.
@@ -213,7 +201,7 @@ Al cargar una página con movimiento permitido, la isla del menú SHALL entrar c
 
 #### Scenario: Navegación entre páginas
 - **WHEN** el usuario llega a una página mediante un enlace interno en un navegador con transición entre páginas
-- **THEN** el menú permanece estable, sin repetir la animación de caída
+- **THEN** el menú permanece estable durante la transición, sin repetir la animación de caída
 
 ### Requirement: Marcador de sección activa en el menú de escritorio
 En escritorio, el menú SHALL señalar el enlace de la sección que el usuario está viendo en la home mediante un marcador con forma de sticker que se desliza de un enlace a otro. Al pasar el puntero por los enlaces, el marcador SHALL seguir al enlace bajo el puntero y volver al de la sección activa al salir. El texto de los enlaces SHALL mantener un contraste mínimo de 4.5:1 sobre el marcador.
